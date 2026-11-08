@@ -1,0 +1,31 @@
+const names=['Tamborzão','Voltmix','Beat Bolha','Mandelão'];
+const parts=[['Bumbo','Ataque','Conga slap','Conga grave'],['Bumbo','Caixa','Cowbell','Chimbal'],['Bumbo','Caixa','Tom bolha','Cowbell'],['Bumbo','Palma','Aro','Chimbal']];
+const $=id=>document.getElementById(id),canvas=$('lcd'),ctx=canvas.getContext('2d'),pixels=ctx.createImageData(240,240);
+let c,wasm,processor,context,state,offlineTimer,audioStarting,lastStatus='';
+const error=e=>{$('error').textContent='Não foi possível executar: '+e.message;};
+const presets=names.map((n,i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>send({type:'preset',value:i});$('presets').append(b);return b;});
+const tracks=Array.from({length:4},(_,i)=>{const b=document.createElement('button');b.className='track';b.innerHTML='<span class="track-name"></span><span class="mini" aria-hidden="true">'+ '<i></i>'.repeat(32)+'</span>';b.onclick=()=>control(2,1,i-state[2]);$('tracks').append(b);return b;});
+const steps=Array.from({length:16},(_,i)=>{const b=document.createElement('button');b.onclick=()=>send({type:'step',value:state[3]*16+i});$('steps').append(b);return b;});
+function display(frame){state=frame.state;const p=frame.pixels;if(p){for(let i=0;i<p.length;i++){const v=p[i],at=i*4;pixels.data[at]=(v>>11)*255/31;pixels.data[at+1]=((v>>5)&63)*255/63;pixels.data[at+2]=(v&31)*255/31;pixels.data[at+3]=255;}ctx.putImageData(pixels,0,0);}
+ const [kit,pending,part,page,sat,rev,bpm,swing]=state;
+ document.body.dataset.kit=kit;const title=$('kit-title'),art=['tamborzao','voltmix','bolha','mandelao'][kit];if(title.dataset.kit!==String(kit)){title.src='../assets/art/'+art+'-title.png';title.alt=names[kit];title.dataset.kit=kit;}
+ $('name').textContent=names[kit];$('provenance').textContent=kit?'Provisório · 808':'Kit original';$('selected').textContent=parts[kit][part];
+ const status=state[8]?'A troca falhou. O preset anterior foi mantido.':pending?`${names[pending-1]} entra no próximo compasso. Toque no preset atual para cancelar.`:state[13]?'Tocando · edite enquanto ouve':'Pronto · pressione Tocar';if(status!==lastStatus){$('status').textContent=status;lastStatus=status;}
+ presets.forEach((b,i)=>{b.setAttribute('aria-pressed',i===kit);b.classList.toggle('pending',pending===i+1);});
+ tracks.forEach((b,i)=>{b.setAttribute('aria-pressed',i===part);b.querySelector('.track-name').textContent=(i===part?'› ':'')+parts[kit][i];[...b.querySelectorAll('i')].forEach((el,s)=>{el.classList.toggle('on',(state[9+i]>>>s)&1);el.classList.toggle('playhead',!!state[13]&&state[14]===s);});});
+ document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.page===page));
+ steps.forEach((b,i)=>{const s=page*16+i,on=(state[9+part]>>>s)&1;b.textContent=String(s+1).padStart(2,'0');b.setAttribute('aria-label',`${parts[kit][part]}, passo ${s+1}`);b.setAttribute('aria-pressed',!!on);b.classList.toggle('playhead',!!state[13]&&state[14]===s);});
+ for(const [id,v,label]of [['sat',sat,sat+'%'],['rev',rev,Math.round(rev/15*100)+'%'],['bpm',bpm,bpm],['swing',swing,swing+'%']]){if(document.activeElement!==$(id))$(id).value=v;$(id+'-out').value=label;}
+ $('play').textContent=state[13]?'■ Parar':'▶ Tocar';$('play').setAttribute('aria-pressed',!!state[13]);
+}
+function frame(){display({state:new Uint32Array(c.memory.buffer,c.baile_state(),17).slice(),pixels:new Uint16Array(c.memory.buffer,c.sim_pixels(),57600)});}
+function send(m){if(!c)return;if(processor){processor.port.postMessage(m);return;}try{if(m.type==='control'){c.sim_control(...m.args);if(m.args[0]<2)c.sim_control(m.args[0],m.args[1],0);}else if(m.type==='preset')c.sim_preset(m.value);else if(m.type==='step')c.sim_step(m.value,1);frame();}catch(e){error(e);}}
+function control(kind,index,value){if(kind===2){while(Math.abs(value)>127){const delta=Math.sign(value)*127;send({type:'control',args:[kind,index,delta]});value-=delta;}}send({type:'control',args:[kind,index,value]});}
+async function enableAudio(){if(processor){await context.resume();return;}if(audioStarting)return audioStarting;
+ audioStarting=(async()=>{const candidate=new AudioContext({sampleRate:44100,latencyHint:'interactive'});try{await candidate.audioWorklet.addModule('engine.js');await candidate.resume();clearInterval(offlineTimer);const node=new AudioWorkletNode(candidate,'baile',{numberOfInputs:0,numberOfOutputs:1,outputChannelCount:[2],processorOptions:{wasm,snapshot:c.memory.buffer.slice(0)}});node.port.onmessage=e=>{if(e.data.error)error(new Error(e.data.error));else display(e.data);};node.onprocessorerror=()=>error(new Error('O áudio parou. Recarregue a página para reiniciar.'));node.connect(candidate.destination);context=candidate;processor=node;}catch(e){await candidate.close();throw e;}})();try{await audioStarting;}finally{audioStarting=null;}}
+$('play').onclick=async()=>{try{$('boot-art')?.remove();await enableAudio();control(0,12,1);}catch(e){error(e);}};
+document.querySelectorAll('button[data-encoder]').forEach(b=>b.onclick=()=>control(2,+b.dataset.encoder,+b.dataset.delta));
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>control(0,+b.dataset.page,1));
+document.querySelectorAll('input[data-encoder]').forEach(el=>{let desired=null;el.onpointerdown=()=>desired=+el.value;el.onchange=()=>desired=null;el.oninput=()=>{const index=+el.dataset.encoder,v=+el.value,old=desired??state[index+2];control(2,index,v-old);desired=v;};});
+document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat||['INPUT','BUTTON','SELECT','TEXTAREA'].includes(e.target.tagName))return;const map={ArrowLeft:[1,-1],ArrowRight:[1,1],ArrowUp:[6,-1],ArrowDown:[6,1]};if(e.code==='Space'){e.preventDefault();$('play').click();}else if(map[e.key]){e.preventDefault();control(2,...map[e.key]);}});
+try{const response=await fetch('baile.wasm');if(!response.ok)throw new Error('Motor de áudio indisponível');wasm=await response.arrayBuffer();c=(await WebAssembly.instantiate(wasm,{})).instance.exports;c.sim_boot(3);frame();setTimeout(()=>$('boot-art')?.remove(),2400);$('play').disabled=false;offlineTimer=setInterval(()=>{for(let i=0;i<11;i++)c.sim_render();frame();},32);}catch(e){error(e);$('play').textContent='Falha ao carregar';}

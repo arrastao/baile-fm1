@@ -1,0 +1,11 @@
+{
+  "app_bytes": 500040,
+  "limit": 584993,
+  "package_bytes": 623156,
+  "flash_image_bytes": 602112,
+  "sha256": "71334b801068d29e006290068c2ef960e7d79a556be6d81136a7c2d731f41c58",
+  "build_id": "c32677e2f370af9646d7120e2e5956d6e1ec0f80e267ef027945cda799b6d30e",
+  "product": "FM-1_8490133",
+  "toolchain_sha256": "c45189ee624de0430deb0db02e6dce171fb5538e7fe323e3964dc8ac6236240f",
+  "hardware_validated": false
+}

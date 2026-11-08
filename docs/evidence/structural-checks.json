@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "entry": "0x2000120",
+  "runtime_heap_bytes": 234380,
+  "acl_pools": {
+    "tx": 1024,
+    "rx": 4096
+  },
+  "registration_tables": [
+    "initcall",
+    "early_initcall",
+    "late_initcall",
+    "platform_initcall",
+    "module_initcall",
+    "sys_event_handler",
+    "syscfg_ops",
+    "lp_target",
+    "sys_cpu_timer",
+    "clock_critical_handler",
+    "vfs_ops",
+    "audio_decoder",
+    "audio_hwaccel"
+  ],
+  "audio_and_panel_sram_symbols_checked": 142,
+  "sections": [
+    {
+      "name": ".text",
+      "address": 33554720,
+      "bytes": 419264,
+      "nobits": false
+    },
+    {
+      "name": ".ram0_data",
+      "address": 29360128,
+      "bytes": 80744,
+      "nobits": false
+    },
+    {
+      "name": ".ram0_bss",
+      "address": 29440872,
+      "bytes": 208416,
+      "nobits": true
+    },
+    {
+      "name": ".boot_info",
+      "address": 29883724,
+      "bytes": 52,
+      "nobits": false
+    },
+    {
+      "name": ".cache_ram_data",
+      "address": 32669696,
+      "bytes": 32,
+      "nobits": false
+    }
+  ],
+  "sdk_payload_hashes_verified": true,
+  "toolchain": "JieLi Linux 20260730.1 / clang 4.0.1, r3, original official flags; portable Blink interpreter",
+  "hardware_validated": false
+}

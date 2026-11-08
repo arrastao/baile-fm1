@@ -1,0 +1,6 @@
+run:3: ok (2127157155 instructions; 3.00 s guest in 18.31 s: 0.16x real time)
+hold:12: ok (2127157155 instructions)
+run:0.04: ok (2155957155 instructions; 0.04 s guest in 0.20 s: 0.20x real time)
+release: ok (2155957155 instructions)
+  audio: 22050 frames, rms 0.0336, peak 0.1370 (full scale 1.0)
+level:0.5: ok (2515957155 instructions; 0.50 s guest in 2.59 s: 0.19x real time)

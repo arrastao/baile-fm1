@@ -1,0 +1,41 @@
+{
+  "boot": "Tamborzao",
+  "original_hits": 22,
+  "isolated_step_edit": true,
+  "kits": [
+    {
+      "index": 1,
+      "peak": 0.3801151514053345
+    },
+    {
+      "index": 2,
+      "peak": 0.298673152923584
+    },
+    {
+      "index": 3,
+      "peak": 0.4041513204574585
+    },
+    {
+      "index": 0,
+      "peak": 0.4017205238342285
+    }
+  ],
+  "session_edits_preserved": true,
+  "tempo_preserved": true,
+  "page2_key_verified": true,
+  "pending_cancel_and_latest_wins": true,
+  "bar_switch_step": 16,
+  "saturation_and_reverb": {
+    "dry_peak": 0.359363317489624,
+    "wet_peak": 0.6614583730697632
+  },
+  "hardware_tested": false,
+  "embedded_bank_bytes": 65036,
+  "embedded_bank_sha256": "ad3faba4ed5240959843d94e01a1b6e6ff2d9ec089e29453335524823c5dec31",
+  "writable_flash_bytes": 405504,
+  "blank_flash_boot_and_audio": true,
+  "blank_flash_remains_blank": true,
+  "unrelated_flash_ignored": true,
+  "bank_export_exact": true,
+  "blank_flash_peak": 0.359363317489624
+}
