@@ -2,12 +2,12 @@
 <style>
 :root{font-family:ui-monospace,monospace;color:#eeeae1;background:#111710;color-scheme:dark}*{box-sizing:border-box}body{max-width:880px;margin:auto;padding:32px 22px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}h1{font-size:28px;margin:0;color:#ff648a}small{color:#a9b49d}main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}.device{padding:20px;background:#090b08;border:2px solid #526444;border-radius:28px;box-shadow:0 20px 50px #0008}canvas{width:100%;aspect-ratio:1;image-rendering:pixelated;border-radius:5px;display:block;cursor:pointer}button,select{font:inherit;border:1px solid #526444;padding:12px;border-radius:7px;color:#eeeae1;background:#253021;cursor:pointer;touch-action:manipulation}button:hover{background:#36472f}button:focus-visible,select:focus-visible{outline:3px solid #03e4ec}button.primary{background:#ffda00;color:#111;font-weight:bold;width:100%;margin-bottom:16px}label{display:block;font-size:13px;margin:0 0 8px}select{width:100%;margin-bottom:18px}.pair{display:flex;gap:10px;align-items:center;margin-bottom:15px}.pair button{flex:1}.knob{display:flex;align-items:center;gap:8px;margin-bottom:10px}.knob span{flex:1}.knob output{width:40px;text-align:right;color:#02e6ee}.keys{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:22px}.keys button{padding:10px 0}.keys .on{background:#02d9df;color:#000}.keys .play{outline:2px solid #ff5d8c}.status{min-height:38px;font-size:13px;color:#adbb9e;line-height:1.6}p{font-size:13px;line-height:1.6;color:#b7c1ae}footer{margin-top:24px;font-size:12px;line-height:1.6;color:#8f9c86}@media(max-width:650px){main{grid-template-columns:1fr}.device{max-width:400px;margin:auto;width:100%}body{padding:20px 16px}}
 </style>
-<header><h1>BAILE <small>by MULÚ</small></h1><small>FM1 OPEN · 0.4 DEV</small></header>
+<header><h1>BAILE <small>by MULÚ</small></h1><small>FM1 OPEN · 0.6 DEV</small></header>
 <main><section><div class="device"><canvas id="lcd" width="240" height="240" aria-label="Tela do BAILE; toque uma trilha para selecioná-la"></canvas></div><div id="steps" class="keys" aria-label="16 passos do compasso"></div><p>Clique em uma trilha na tela e use os passos para editar.</p></section>
 <section><button id="play" class="primary" disabled>CARREGANDO…</button><label for="kit">PRESETS · KIT</label><select id="kit"><option value="0">Tamborzão</option><option value="1">Voltmix</option><option value="2">Beat Bolha</option></select>
 <label>ALGORITHM · TRILHA</label><div class="pair"><button id="prev">−</button><span id="part">BUMBO</span><button id="next">+</button></div>
-<div id="knobs"></div><label>OCT −/+ · COMPASSO</label><div class="pair"><button id="bar1">1 / 2</button><button id="bar2">2 / 2</button></div><div id="status" class="status" role="status">Iniciando…</div><p>As alterações ficam nesta sessão. Ao reiniciar, abre o Tamborzão original.</p></section></main>
-<footer>Prévia local do código C reconstruído. Áudio e interface testáveis aqui; instalação no aparelho ainda pendente.</footer>
+<div id="knobs"></div><div id="status" class="status" role="status">Iniciando…</div><p>As alterações ficam nesta sessão. Ao reiniciar, abre o Tamborzão original.</p></section></main>
+<footer>Prévia local do BAILE 0.6 · um compasso por preset.</footer>
 <script>
 'use strict';
 const B64='/*BAILE_WASM*/';
@@ -20,10 +20,10 @@ function paint(pixels,state){
  for(let i=0;i<pixels.length;i++){let p=pixels[i],at=i*4;bitmap.data[at]=(p>>11)*255/31;bitmap.data[at+1]=((p>>5)&63)*255/63;bitmap.data[at+2]=(p&31)*255/31;bitmap.data[at+3]=255;}
  ctx.putImageData(bitmap,0,0);$('part').textContent=names[state[0]][state[2]];
  $('kit').value=state[1]?state[1]-1:state[0];$('play').textContent=state[13]?'PARAR':'TOCAR';
- $('status').textContent=state[8]?'Não foi possível carregar o kit.':state[1]?'Troca de kit no próximo compasso.':`${['Tamborzão','Voltmix','Beat Bolha'][state[0]]} · compasso ${state[3]+1}/2`;
+ $('status').textContent=state[8]?'Não foi possível carregar o kit.':state[1]?'Troca de kit no próximo compasso.':`${['Tamborzão','Voltmix','Beat Bolha'][state[0]]} · 16 passos`;
  for(let i=0;i<4;i++)$('value'+i).value=state[i+4];
  for(let i=0;i<16;i++){let n=state[3]*16+i,b=$('step'+i);b.classList.toggle('on',!!((state[9+state[2]]>>>n)&1));b.classList.toggle('play',!!state[13]&&state[14]===n);b.setAttribute('aria-pressed',!!((state[9+state[2]]>>>n)&1));}
- $('bar1').setAttribute('aria-pressed',state[3]===0);$('bar2').setAttribute('aria-pressed',state[3]===1);
+
 }
 function read(c){paint(new Uint16Array(c.memory.buffer,c.sim_pixels(),57600),new Uint32Array(c.memory.buffer,c.baile_inspect(),15).slice());}
 function command(kind,index,value){if(transfer)return;if(engine)engine.port.postMessage({kind,index,value});else{core.sim_control(kind,index,value);read(core);}}
@@ -32,7 +32,7 @@ for(let i=0;i<16;i++){let b=document.createElement('button');b.id='step'+i;b.tex
 ['K1 SATURATOR','K2 REVERB','K3 BPM','K4 SWING'].forEach((name,i)=>{let row=document.createElement('div');row.className='knob';let label=document.createElement('span');label.textContent=name;row.append(label);for(const delta of [-1,1]){let b=document.createElement('button');b.textContent=delta<0?'−':'+';b.setAttribute('aria-label',`${delta<0?'Diminuir':'Aumentar'} ${name}`);b.onclick=()=>command(2,i+2,delta);row.append(b);if(delta<0){let v=document.createElement('output');v.id='value'+i;row.append(v);}}$('knobs').append(row);});
 $('kit').onchange=()=>command(2,6,+$('kit').value-(values[1]?values[1]-1:values[0]));
 $('prev').onclick=()=>command(2,1,-1);$('next').onclick=()=>command(2,1,1);
-$('bar1').onclick=()=>press(0);$('bar2').onclick=()=>press(1);
+
 $('lcd').onclick=e=>{let r=$('lcd').getBoundingClientRect(),y=(e.clientY-r.top)*240/r.height,p=Math.floor((y-59)/24);if(y>=59&&p<4)command(2,1,p-values[2]);};
 const worklet=`class Baile extends AudioWorkletProcessor {
  constructor(options){super();this.c=new WebAssembly.Instance(new WebAssembly.Module(options.processorOptions.wasm),{}).exports;this.c._initialize();let memory=options.processorOptions.memory;this.c.memory.grow((memory.byteLength-this.c.memory.buffer.byteLength)/65536);new Uint8Array(this.c.memory.buffer).set(new Uint8Array(memory));this.count=0;this.port.onmessage=e=>{let m=e.data;this.c.sim_control(m.kind,m.index,m.value);};}

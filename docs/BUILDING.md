@@ -21,7 +21,7 @@ python3 tools/build_macos.py
 node tests/package.mjs
 ```
 
-Uses the existing sibling JieLi Linux 20260730.1 toolchain, Blink and Linux runtime. This is the same build route as Tamborzão 0.1. It recompiles all application units, validates SDK hashes and native layout, then packages `build/BAILE-0.4-MAC.fwsc`. The Python port of the SDK packager reproduces the earlier user-confirmed Tamborzão package byte for byte; BAILE selects its explicit 405504-byte user partition. No stock boot replacement or container-identity rewrite is applied.
+Uses the existing sibling JieLi Linux 20260730.1 toolchain, Blink and Linux runtime. This is the same build route as Tamborzão 0.1. It recompiles all application units, validates SDK hashes and native layout, then packages `build/BAILE-0.6-MAC.fwsc`. The Python port of the SDK packager reproduces the earlier user-confirmed Tamborzão package byte for byte; BAILE selects its explicit 405504-byte user partition. No stock boot replacement or container-identity rewrite is applied.
 
 ## Native Windows build (alternative; pending execution)
 
@@ -33,7 +33,7 @@ Run in a fresh Windows PowerShell process:
 ./tools/Build-Baile.ps1 -Toolchain 'C:\JL\pi32'
 ```
 
-This derives the build script and C# packager in `build/baile-tools`, leaving the SDK manifest and every SDK file intact. It retains the official compiler checks, DSP checks, link checks and boot resources. It changes the documented user allocation, retains required BLE APIs despite the smaller UI, and names the local candidate `build/dx7/generated/BAILE-0.4-dev.fwsc`.
+This derives the build script and C# packager in `build/baile-tools`, leaving the SDK manifest and every SDK file intact. It retains the official compiler checks, DSP checks, link checks and boot resources. It changes the documented user allocation, retains required BLE APIs despite the smaller UI, and names the local candidate `build/dx7/generated/BAILE-0.6-dev.fwsc`.
 
 Do not run upstream `build.bat` directly for BAILE: it uses the original storage allocation. Do not distribute a binary without its matching complete source and license notices. The wrapper's Windows execution and output remain unverified on this Mac.
 

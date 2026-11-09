@@ -1,12 +1,14 @@
 # BAILE by MULÚ
 
-BAILE is a three-kit rhythm instrument for the M-VAVE FM-1: **Tamborzão**, **Voltmix** and **Beat Bolha**. It starts with Tamborzão, displays four sound parts, and lets the player edit a two-bar pattern with the white keys.
+BAILE is a three-kit rhythm instrument for the M-VAVE FM-1: **Tamborzão**, **Voltmix** and **Beat Bolha**. It starts with Tamborzão, displays four sound parts, and lets the player edit a one-bar pattern with the white keys.
 
 This is a fresh local reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinned to [`4c7496d`](https://github.com/m-vave/fm1_open/commit/4c7496daac04a95ff10d1afdcc8f9ead2dbabc41). It is not based on SLOOP or Felucca. The previous BAILE checkout remains separate.
 
+**0.6 change:** the complete splash artwork stays visible for three seconds before controls become active. All presets use one 16-step bar; Bolha BRILHANTE uses the user-approved steps 4, 7, 11 and 13. The user confirmed 0.4 worked on a physical FM-1; 0.6 device validation is pending.
+
 **Status:** firmware compiled on macOS using the same JieLi Linux + Blink route as the first Tamborzão firmware. Container integrity, original boot, embedded banks and native emulator playback verified. M-UPGRADE installation and physical-device validation of this new build remain pending. See [STATUS](STATUS.md).
 
-[Download BAILE 0.4 firmware](https://github.com/arrastao/baile-fm1/raw/refs/heads/main/firmware/BAILE-0.4-MAC.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
+[Download BAILE 0.6 firmware](firmware/BAILE-0.6-MAC.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
 
 [Português](README.pt-BR.md) · [Build](docs/BUILDING.md) · [Architecture](docs/ARCHITECTURE.md) · [Asset rights](assets/README.md)
 
@@ -17,7 +19,7 @@ This is a fresh local reconstruction on [FM1 Open](https://github.com/m-vave/fm1
 | PRESETS | Tamborzão / Voltmix / Beat Bolha |
 | ALGORITHM | Select one of the four sound parts |
 | 16 white keys | Toggle the selected part's steps in the visible bar |
-| OCT −/+ | First / second bar |
+| OCT −/+ | Unused (single bar) |
 | PLAY | Start / stop |
 | K1 | Saturator |
 | K2 | Reverb |

@@ -26,7 +26,15 @@ def image(name):
     pixels=list(s.sim_pixels()[:240*240])
     image=Image.new('RGB',(240,240));image.putdata([((v>>11)*255//31,((v>>5)&63)*255//63,(v&31)*255//31) for v in pixels]);image.save(out/(name+'.png'))
 
-s.sim_boot(3);render(90);image('splash');render(500)
+s.sim_boot(3);render(90);image('splash')
+# Controls cannot skip the three-second hold after the initial frame completes.
+splash_pixels=list(s.sim_pixels()[:240*240])
+press(0,12) # a PLAY press must not start the transport
+render(850)
+assert list(s.sim_pixels()[:240*240])==splash_pixels
+assert s.sim_state()[14]==0
+render(350)
+assert list(s.sim_pixels()[:240*240])!=splash_pixels
 assert s.baile_state(0)==0 and s.baile_state(8)==0
 racks=json.loads((root/'assets/audio/racks.json').read_text())
 report={'upstream_commit':'4c7496daac04a95ff10d1afdcc8f9ead2dbabc41','hardware_tested':False,'kits':{}}
@@ -43,7 +51,8 @@ for kit,name in enumerate(['tamborzao','voltmix','bolha']):
     masks=[0]*4
     for n in meta['notes']:
         step=min(31 if not kit else 15,int(n['beat']*4+.5));masks[n['midi']-(36 if not kit else 60)]|=1<<step
-    if kit:masks=[v|(v<<16) for v in masks]
+    masks=[v & 0xffff for v in masks]
+    if kit==2:masks[2]=sum(1 << (n-1) for n in [4,7,11,13])
     assert [s.groove_drum_steps(0,p) for p in range(4)]==masks
     image(name)
     press(0,12);audio=render(1600)
@@ -57,11 +66,18 @@ for kit,name in enumerate(['tamborzao','voltmix','bolha']):
 s.sim_preset(0);s.baile_encoder(1,1);assert s.baile_state(2)==1
 before=s.groove_drum_steps(0,1);press(1,2);assert s.groove_drum_steps(0,1)==(before^2)
 s.sim_preset(1);s.sim_preset(0);assert s.groove_drum_steps(0,1)==(before^2)
-press(0,1);assert s.baile_state(3)==1
-press(1,0);assert s.groove_drum_steps(0,1)==((before^2)^(1<<16))
+press(0,1);assert s.baile_state(3)==0
+s.baile_encoder(0,1);assert s.baile_state(3)==0
+mask=s.groove_drum_steps(0,1);s.baile_step(16);assert s.groove_drum_steps(0,1)==mask
+# Every preset loops within 16 steps, including beyond the old second bar.
+for kit in range(3):
+    s.sim_preset(kit);press(0,12)
+    for _ in range(1600):
+        render(1);assert s.sim_state()[15]<16
+    press(0,12);render(8)
 # Bounds, preset encoder, and rejection of sample-bank import.
 assert s.sim_preset(3)<0 and s.groove_samples_begin(1024)<0
-s.baile_encoder(6,-1);assert s.baile_state(0)==2
+s.sim_preset(0);s.baile_encoder(6,-1);assert s.baile_state(0)==2
 for e,field,maxval in [(2,4,100),(3,5,15)]:
     s.baile_encoder(e,127);assert s.baile_state(field)==maxval
     s.baile_encoder(e,-127);assert s.baile_state(field)==0
@@ -76,9 +92,9 @@ press(0,12);render(20)
 # Neither boot nor normal performance writes user flash.
 assert bytes(s.sim_flash()[:s.fm1_flash_size()])==flash_before
 # Reboot consistently restores Tamborzao, regardless of prior kit and RAM edits.
-s.sim_boot(0);render(500);assert s.baile_state(0)==0
+s.sim_boot(0);render(1400);assert s.baile_state(0)==0
 assert s.groove_drum_steps(0,1)==before
-report['checks']=['embedded banks byte-exact','source note masks','three finite audible previews','independent session edits','both bars editable','preset wrapping','FX bounds','queued kit change','no storage writes','default kit on reboot']
+report['checks']=['three-second splash cannot be skipped','embedded banks byte-exact','source note masks','three finite audible previews','independent session edits','single-bar loops and no hidden second-bar edits','preset wrapping','FX bounds','queued kit change','no storage writes','default kit on reboot']
 (out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
 # Drive must preserve exact samples at zero and bound hot output to Q23.
@@ -88,7 +104,7 @@ s.baile_encoder(2,100);s.baile_saturate(pcm)
 assert list(pcm)!=original and all(-8388608<=v<=8388607 for v in pcm)
 # Reverb is audible, not merely a changing UI counter.
 def fx_preview(amount):
-    s.sim_boot(0);render(150);s.baile_encoder(3,amount);press(0,12)
+    s.sim_boot(0);render(1400);s.baile_encoder(3,amount);press(0,12)
     return render(900)
 dry=fx_preview(0);wet=fx_preview(15)
 assert sum(abs(a-b) for a,b in zip(dry,wet))>1

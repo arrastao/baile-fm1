@@ -1,3 +1,21 @@
+# BAILE 0.6 — three-second splash
+
+The complete boot artwork is held for three seconds after the first LCD frame is submitted. Panel controls cannot skip this interval; screen and engine servicing continue. After the hold, Tamborzão opens normally.
+
+Includes the 0.5 single-bar update and approved Bolha BRILHANTE pattern. The user confirmed 0.4 on physical hardware; 0.6 physical-device validation is pending. Host tests verify splash hold, ignored early PLAY input, eventual transition, all three kits, single-bar loops, editing and effects. Native build/package evidence is generated under build/dx7/generated.
+
+Previous development records follow:
+
+# BAILE 0.5 — single-bar update
+
+All three presets use one bar (16 steps). The first bar of each earlier pattern is retained, except Bolha BRILHANTE, which uses the user-approved browser edit: steps 4, 7, 11 and 13. Page controls are inactive; kit switching observes the 16-step wrap.
+
+The user confirmed BAILE 0.4 worked perfectly on a physical FM-1 on 2026-11-09. That report applies to 0.4. Hardware validation of 0.5 remains pending.
+
+Build and test evidence for 0.5 is generated under build/evidence and build/dx7/generated. SDK, native board drivers and portable engine remain pinned and unmodified.
+
+Previous 0.4 build record follows (historical pre-device-test status):
+
 # BAILE rebuild — 2026-11-09
 
 Status: firmware compiled and packaged on macOS; new physical-device installation pending.

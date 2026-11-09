@@ -21,7 +21,7 @@ No previous synthetic kits, Mandelão data, stock boot substitution or short-ide
 
 Flash is 1 MiB. Original user storage was 536576 bytes; BAILE reserves 405504 bytes, leaving more space for embedded application assets. The new application still keeps the official entry point, boot resources, OTA loader, VM minimum and final chip configuration region. The storage change affects USER/BTIF placement and requires migration testing.
 
-`baile-layout.json`, the application storage enum, native diagnostic identity and generated Windows build must agree. The Windows wrapper derives its packager from the immutable official C# file; it does not splice boot bytes from another firmware. Product identity follows the upstream long-ID rule (`FM-1_8490140`). Do not assume M-UPGRADE acceptance from a file extension or static checks.
+`baile-layout.json`, the application storage enum, native diagnostic identity and generated Windows build must agree. The Windows wrapper derives its packager from the immutable official C# file; it does not splice boot bytes from another firmware. Product identity follows the upstream long-ID rule (`FM-1_8490160`). Do not assume M-UPGRADE acceptance from a file extension or static checks.
 
 ## Timing limit
 
@@ -29,6 +29,6 @@ The unchanged native SDK exposes transport state to the control task, not a publ
 
 ## Asset fidelity
 
-SEA5 banks are 32 kHz mono. Existing encoded banks are preserved byte for byte, not recompressed. `tools/assets.py` validates the header, CRC, slot bounds, frame lengths and every codec header before generating C arrays. Tamborzão uses the original two-bar events. Voltmix/Bolha use the approved ordering of notes 60–63 and nearest-sixteenth quantization, repeated across two bars. Shared event velocity is 100, as in the previous imported assets.
+SEA5 banks are 32 kHz mono. Existing encoded banks are preserved byte for byte, not recompressed. `tools/assets.py` validates the header, CRC, slot bounds, frame lengths and every codec header before generating C arrays. All presets retain the first 16 steps of the source patterns, using the approved ordering of notes 60–63 and nearest-sixteenth quantization for Voltmix/Bolha. Bolha BRILHANTE instead uses the approved browser edit (steps 4, 7, 11, 13) recorded in assets/audio/pattern-overrides.json. Shared event velocity is 100, as in the previous imported assets.
 
 Art uses 160-wide, 32-color RLE sources expanded to a 240 × 240 LCD. Header art occupies 56 screen rows; track labels, patterns and values are live C-rendered elements.

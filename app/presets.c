@@ -26,7 +26,7 @@ int groove_factory_build(unsigned kit, struct groove_project *p) {
         struct groove_preset *v = &p->preset[t];
         v->type = t ? GROOVE_PSG : GROOVE_SAMPLE;
         v->volume = 100; v->modified = 1; v->controls.envelope[2] = 100;
-        v->sequence_pages = 2;
+        v->sequence_pages = 1;
         if (!t) {
             v->sampler_pads = SAMPLE_DRUM_PADS;
             for (unsigned pad = 0; pad < SAMPLE_DRUM_PADS; ++pad) {
@@ -37,7 +37,7 @@ int groove_factory_build(unsigned kit, struct groove_project *p) {
         } else { v->data[1] = 16; v->data[2] = 24; v->data[3] = 38; }
     }
     for (unsigned part = 0; part < 4; ++part)
-        for (unsigned step = 0; step < 32; ++step)
+        for (unsigned step = 0; step < 16; ++step)
             if ((factory_steps[kit][part] >> step) & 1U) {
                 p->step[0][step].drums |= 1U << part;
                 p->step[0][step].velocity = 100;

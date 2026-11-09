@@ -5165,7 +5165,7 @@ static const unsigned char bank_bolha[] __attribute__((aligned(4))) = {
 static const unsigned char *const banks[3] = {bank_tamborzao,bank_voltmix,bank_bolha};
 static const unsigned bank_sizes[3] = {sizeof bank_tamborzao,sizeof bank_voltmix,sizeof bank_bolha};
 static const uint32_t factory_steps[3][4] = {
-{0x4410441U,0x11111111U,0x480048U,0x50005000U},
-{0x4490449U,0x10101010U,0x55555555U,0xc007c007U},
-{0x81018101U,0x34483448U,0xbdddbdddU,0x11111111U},
+{0x441U,0x1111U,0x48U,0x5000U},
+{0x449U,0x1010U,0x5555U,0xc007U},
+{0x8101U,0x3448U,0x1448U,0x1111U},
 };

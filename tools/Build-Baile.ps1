@@ -36,6 +36,6 @@ $script = Replace-Once $script '[FM1.Package]::Create' '[FM1.BailePackage]::Crea
 # though the small BAILE panel has no Bluetooth configuration page.
 $roots = '$link += @(''--undefined=fm1_ble_scan'',''--undefined=fm1_ble_connect'',''--undefined=fm1_ble_disconnect'',''--undefined=fm1_ble_get_status'',''--undefined=fm1_ble_get_device'',''--undefined=fm1_bluetooth_get_status'')'
 $script = Replace-Once $script '    Run (Join-Path $bin ''pi32v2-ld.exe'') $link' ($roots + "`n" + '    Run (Join-Path $bin ''pi32v2-ld.exe'') $link')
-$script = $script.Replace('FM1_OFFICIAL_OPEN.fwsc','BAILE-0.4-dev.fwsc')
+$script = $script.Replace('FM1_OFFICIAL_OPEN.fwsc','BAILE-0.6-dev.fwsc')
 [IO.File]::WriteAllText((Join-Path $work 'Build.ps1'), $script, $utf8)
 & (Join-Path $work 'Build.ps1') -FirmwareOnly -Toolchain $Toolchain

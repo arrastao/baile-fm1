@@ -68,13 +68,13 @@ static void draw_band(void) {
         }
     }
     char s[40];
-    number_label(s,"COMPASSO ",frame.page+1,"/2");text(6,161,s,0);
+    strcpy(s,"16 PASSOS");text(6,161,s,0);
     text(99,161,frame.transport.playing?"TOCANDO":"PARADO",0);
     number_label(s,"",frame.transport.tempo," BPM");text(191,161,s,0);
     fill(6,179,70,19,0);fill(83,179,70,19,0);
     number_label(s,"SAT ",frame.sat,"");text(12,185,s,0x07ff);
     number_label(s,"REV ",frame.rev,"");text(89,185,s,0x07ff);
-    number_label(s,"SWING ",frame.swing,"  OCT -/+ PAGINA");text(6,206,s,0);
+    number_label(s,"SWING ",frame.swing,"");text(6,206,s,0);
     if(frame.error){text(6,226,"ERRO AO CARREGAR KIT",0);return;}
     if(frame.pending){strcpy(s,"PROX > ");strcat(s,baile_name(frame.pending-1));text(6,226,s,0);return;}
     fill(3,220,72,17,0x07ff);fill(77,220,48,17,0);fill(127,220,53,17,0);fill(182,220,55,17,0);
@@ -101,6 +101,7 @@ static void paint(void) {
         if(fm1_screen_submit(0,top,240,16,pixels,240*16))return;
         hashes[band++]=hash;return;
     }
+    if(!initialized && splash)started=fm1_millis();
     initialized=1;frame_active=0;
 }
 void groove_screen_init(void) {
@@ -113,8 +114,14 @@ void groove_screen_init(void) {
 void groove_screen_control(void) {
     struct fm1_controls c;fm1_controls_read(&c);
     uint32_t pressed=c.buttons&~old_buttons,keys=c.keys&~old_keys;
-    unsigned moved=0;for(unsigned n=0;n<7;++n)moved|=c.encoders[n]!=0;
-    if(splash&&(fm1_millis()-started>=1200||pressed||keys||moved)){splash=0;dirty=1;}
+    /* Keep the complete boot artwork readable for three seconds. Continue
+     * rendering and servicing the engine; controls cannot skip this interval. */
+    if(splash){
+        if(!initialized || fm1_millis()-started<3000){
+            old_buttons=c.buttons;old_keys=c.keys;paint();return;
+        }
+        splash=0;dirty=1;
+    }
     groove_master_update(c.knob);
     for(unsigned n=0;n<7;++n)if(c.encoders[n]){baile_encoder(n,c.encoders[n]);dirty=1;}
     if(pressed&1)baile_page(0);if(pressed&2)baile_page(1);
@@ -143,7 +150,7 @@ unsigned groove_screen_preset_position(void){return baile_state(0)|(1U<<8)|(1U<<
 int groove_screen_open(unsigned target){if(target>1)return -1;splash=0;dirty=1;return 0;}
 void groove_screen_web_fine(unsigned fine){(void)fine;}
 unsigned groove_screen_web_first(void){return baile_state(3)*16;}
-int groove_screen_web_step(unsigned step,unsigned toggle){if(step>=32||toggle>1)return -1;if(toggle)baile_step(step);baile_page(step/16);dirty=1;return 0;}
+int groove_screen_web_step(unsigned step,unsigned toggle){if(step>=16||toggle>1)return -1;if(toggle)baile_step(step);baile_page(step/16);dirty=1;return 0;}
 unsigned groove_screen_web_context(void){return 1+baile_state(0)*4+baile_state(2);}
 unsigned groove_screen_web_mask(void){return 15;}
 const void *groove_screen_web_targets(void){static const int empty;return &empty;}

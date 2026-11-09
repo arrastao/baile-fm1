@@ -4,9 +4,9 @@ Instrumento de ritmos para o M-VAVE FM-1 com **Tamborzão, Voltmix e Beat Bolha*
 
 ## Uso
 
-Após a abertura com a arte do BAILE, aparece o Tamborzão. PLAY inicia ou para o beat. PRESETS troca de kit; ALGORITHM seleciona uma das quatro trilhas; as 16 teclas brancas alternam os passos dessa trilha. OCT −/+ escolhe o primeiro ou o segundo compasso. K1 controla saturação, K2 reverb, K3 BPM e K4 swing.
+A arte de abertura do BAILE permanece completa por 3 segundos. Em seguida aparece o Tamborzão e os controles ficam ativos. PLAY inicia ou para o beat. PRESETS troca de kit; ALGORITHM seleciona uma das quatro trilhas; as 16 teclas brancas alternam os passos dessa trilha. Cada preset tem um único compasso de 16 passos; OCT −/+ fica sem função. K1 controla saturação, K2 reverb, K3 BPM e K4 swing.
 
-Os três kits guardam suas edições separadamente durante a sessão. Ao reiniciar, volta o Tamborzão original. Não há Mandelão nesta versão. Os clips de Voltmix e Bolha foram mapeados na ordem KICK, SNARE, HAT, RIM e aproximados à grade de semicolcheias conforme autorizado; cada compasso foi repetido para formar dois.
+Os três kits guardam suas edições separadamente durante a sessão. Ao reiniciar, volta o Tamborzão original. Não há Mandelão nesta versão. Os clips de Voltmix e Bolha foram mapeados na ordem KICK, SNARE, HAT, RIM e aproximados à grade de semicolcheias conforme autorizado; é usado um único compasso. A Brilhante do Bolha usa a edição aprovada no navegador: passos 4, 7, 11 e 13.
 
 ## O que já foi verificado
 
@@ -19,7 +19,7 @@ Os três kits guardam suas edições separadamente durante a sessão. Ao reinici
 
 ## Firmware compilado no Mac
 
-[Baixar BAILE 0.4 — arquivo único .fwsc](https://github.com/arrastao/baile-fm1/raw/refs/heads/main/firmware/BAILE-0.4-MAC.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
+[Baixar BAILE 0.6 — arquivo único .fwsc](firmware/BAILE-0.6-MAC.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
 
 Compilado com JieLi Linux + Blink no Mac, pelo mesmo caminho da primeira versão Tamborzão. O empacotador reproduziu aquela primeira versão byte a byte. O novo pacote contém os três bancos e artes, passou no verificador do SDK, manteve o boot e o OTA loader da versão inicial e iniciou com áudio no emulador de diagnóstico corrigido.
 

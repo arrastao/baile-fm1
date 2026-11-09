@@ -1,0 +1,21 @@
+{
+  "firmware": "BAILE-0.6-MAC.fwsc",
+  "package_sha256": "e00528120bcc6401c0364845b0deba1eb281c246a447898dae3c254186803d60",
+  "bytes": 590388,
+  "product": "FM-1_8490160",
+  "sdk_container_crc_checks": true,
+  "application_byte_exact": true,
+  "boot_identical_to_user_confirmed_tamborzao_01": true,
+  "boot_sha256": "2981ccf8d12a132c82d8b5e959c2d27d62f13bc51419225cacc87a6e82d58171",
+  "loader_byte_identical": true,
+  "embedded_banks": {
+    "tamborzao": 65036,
+    "voltmix": 34484,
+    "bolha": 24224
+  },
+  "flash_bytes": 569344,
+  "user_at": 638976,
+  "user_bytes": 405504,
+  "vm_bytes": 65536,
+  "hardware_tested": false
+}

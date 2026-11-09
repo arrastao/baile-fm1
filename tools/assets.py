@@ -30,7 +30,10 @@ for kit in names:
         step = min(31 if kit == 'tamborzao' else 15,int(n['beat']*4+0.5))
         assert 0 <= part < 4 and step >= 0
         masks[part] |= 1 << step
-    if kit != 'tamborzao': masks = [v | (v << 16) for v in masks]
+    masks = [v & 0xffff for v in masks]
+    if kit == 'bolha':
+        override = json.loads((root/'assets/audio/pattern-overrides.json').read_text())
+        masks[2] = sum(1 << (n-1) for n in override['bolha']['BRILHANTE'])
     patterns.append(masks)
 out += ['static const unsigned char *const banks[3] = {bank_tamborzao,bank_voltmix,bank_bolha};',
         'static const unsigned bank_sizes[3] = {sizeof bank_tamborzao,sizeof bank_voltmix,sizeof bank_bolha};',
@@ -38,4 +41,4 @@ out += ['static const unsigned char *const banks[3] = {bank_tamborzao,bank_voltm
 out += ['{'+','.join(hex(v)+'U' for v in m)+'},' for m in patterns]
 out.append('};')
 (root/'app/baile_assets.inc').write_text('\n'.join(out)+'\n')
-print('Validated 3 banks / 12 samples; generated source-derived 32-step patterns.')
+print('Validated 3 banks / 12 samples; generated 16-step patterns with approved overrides.')

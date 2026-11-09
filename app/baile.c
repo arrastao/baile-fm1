@@ -4,7 +4,7 @@
 #include <string.h>
 extern int baile_bind(unsigned kit);
 static struct groove_project session[3];
-static unsigned kit, part, page, last_bar, reverb, valid[3];
+static unsigned kit, part, page, last_step, reverb, valid[3];
 static int pending, fault;
 volatile unsigned baile_drive;
 static int clamp(int n, int lo, int hi) { return n < lo ? lo : n > hi ? hi : n; }
@@ -41,7 +41,7 @@ static int activate(unsigned next, int capture) {
     return fault = r;
 }
 void baile_start(void) {
-    kit = part = page = last_bar = reverb = baile_drive = 0;
+    kit = part = page = last_step = reverb = baile_drive = 0;
     pending = -1; fault = 0; memset(valid, 0, sizeof valid);
     (void)activate(0, 0);
 }
@@ -54,15 +54,15 @@ int baile_select(unsigned next) {
 }
 void baile_poll(void) {
     struct groove_view v; groove_get_view(0, 0, &v);
-    unsigned bar = v.play_step / 16;
-    if (pending >= 0 && (!v.playing || bar != last_bar)) (void)activate((unsigned)pending, 1);
-    last_bar = bar;
+    unsigned step = v.play_step;
+    if (pending >= 0 && (!v.playing || step < last_step)) (void)activate((unsigned)pending, 1);
+    last_step = step;
 }
-void baile_page(unsigned value) { page = value ? 1 : 0; }
+void baile_page(unsigned value) { (void)value; page = 0; }
 void baile_encoder(unsigned e, int delta) {
     if (!delta) return;
     switch (e) {
-    case 0: page = (unsigned)clamp((int)page+delta,0,1); break;
+    case 0: break;
     case 1: part = (unsigned)((int)part+delta%4+4)%4; break;
     case 2: baile_drive = (unsigned)clamp((int)baile_drive+delta,0,100); break;
     case 3: reverb = (unsigned)clamp((int)reverb+delta,0,15); send_level(); break;
@@ -72,7 +72,7 @@ void baile_encoder(unsigned e, int delta) {
     }
 }
 void baile_step(unsigned step) {
-    if (step >= 32) return;
+    if (step >= 16) return;
     uint64_t mask = groove_drum_steps(0,part);
     groove_sequence_edit(0,step,groove_pad_note(0,part),(mask>>step)&1U ? 0 : 100);
 }
