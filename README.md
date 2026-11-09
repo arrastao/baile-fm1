@@ -2,11 +2,10 @@
 
 BAILE is a three-kit rhythm instrument for the M-VAVE FM-1: **Tamborzão**, **Voltmix** and **Beat Bolha**. It starts with Tamborzão, displays four sound parts, and lets the player edit a one-bar pattern with the white keys.
 
-This is a fresh local reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinned to [`4c7496d`](https://github.com/m-vave/fm1_open/commit/4c7496daac04a95ff10d1afdcc8f9ead2dbabc41). It is not based on SLOOP or Felucca. The previous BAILE checkout remains separate.
+This is a reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinned to [`4c7496d`](https://github.com/m-vave/fm1_open/commit/4c7496daac04a95ff10d1afdcc8f9ead2dbabc41). 
 
 **0.7 change:** the 12 samples use a common attack-energy reference with peak headroom; originals are preserved. See [audio preparation](docs/AUDIO.md).
 
-**Interface:** the complete splash artwork stays visible for three seconds before controls become active. All presets use one 16-step bar; Bolha BRILHANTE uses the user-approved steps 4, 7, 11 and 13. The user confirmed BAILE 0.7 working perfectly on their physical FM-1 on 2026-11-09.
 
 **Status: stable (0.7).** Promoted after the user reported successful operation on their FM-1. The firmware bytes are unchanged from the tested build. Container integrity, original boot, embedded banks and native emulator playback were also verified. See [STATUS](STATUS.md).
 
