@@ -24,7 +24,7 @@ assert report['product'] == product and report['fits']
 app = (generated/'application.bin').read_bytes()
 assert len(app) == report['app_bytes']
 data, flash_bytes, limit = pack.create(app, str(ROOT/'sdk/tools/pack'), product, config['user_bytes'])
-output = ROOT/'build/BAILE-0.6-MAC.fwsc'
+output = ROOT/'build/BAILE-0.7-FM1.fwsc'
 output.write_bytes(data)
 report.update(firmware=output.name, package_bytes=len(data), flash_image_bytes=flash_bytes,
               package_sha256=hashlib.sha256(data).hexdigest(), user_bytes=config['user_bytes'],

@@ -2,6 +2,8 @@
 
 Instrumento de ritmos para o M-VAVE FM-1 com **Tamborzão, Voltmix e Beat Bolha**. Esta reconstrução começa no código oficial limpo do FM1 Open, revisão `4c7496daac04a95ff10d1afdcc8f9ead2dbabc41`, conferida como a mais recente em 08/11/2026. O projeto anterior foi preservado.
 
+Na versão 0.7, os 12 samples recebem ajuste de ganho para aproximar o volume dos ataques, com margem nos picos. Os WAVs originais são preservados. [Detalhes](docs/AUDIO.md).
+
 ## Uso
 
 A arte de abertura do BAILE permanece completa por 3 segundos. Em seguida aparece o Tamborzão e os controles ficam ativos. PLAY inicia ou para o beat. PRESETS troca de kit; ALGORITHM seleciona uma das quatro trilhas; as 16 teclas brancas alternam os passos dessa trilha. Cada preset tem um único compasso de 16 passos; OCT −/+ fica sem função. K1 controla saturação, K2 reverb, K3 BPM e K4 swing.
@@ -17,18 +19,20 @@ Os três kits guardam suas edições separadamente durante a sessão. Ao reinici
 - Interface em 240 × 240 e controles da prévia conferidos no navegador.
 - SDK íntegro; compilação nativa de diagnóstico e limites de memória verificados separadamente.
 
-## Firmware compilado no Mac
+## Firmware para FM-1
 
-[Baixar BAILE 0.6 — arquivo único .fwsc](firmware/BAILE-0.6-MAC.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
+[Baixar BAILE 0.7 — arquivo único .fwsc](firmware/BAILE-0.7-FM1.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
 
 Compilado com JieLi Linux + Blink no Mac, pelo mesmo caminho da primeira versão Tamborzão. O empacotador reproduziu aquela primeira versão byte a byte. O novo pacote contém os três bancos e artes, passou no verificador do SDK, manteve o boot e o OTA loader da versão inicial e iniciou com áudio no emulador de diagnóstico corrigido.
 
 A aplicação ocupa 551.528 bytes; o arquivo completo tem 590.388 bytes. Nenhum banco precisa ser baixado ou importado separadamente.
 
-## O que ainda falta
+## Versão estável
 
-A instalação deste novo arquivo pelo M-UPGRADE e o teste físico no FM-1 ainda não foram feitos. O resultado no emulador não comprova que o problema de atualização anterior foi resolvido. O emulador comum pode apresentar sua falha conhecida de periférico não implementado; o teste usou a variante local de diagnóstico corrigida.
+A versão 0.7 foi promovida a estável após o usuário confirmar funcionamento perfeito no seu FM-1 em 09/11/2026. O arquivo publicado é exatamente o mesmo que foi testado, sem recompilação. Essa confirmação é um relato do usuário sobre seu aparelho. Os testes locais de áudio e de integridade do pacote também passaram.
 
-O BAILE reserva 405.504 bytes para dados do usuário e mantém o boot do SDK. A migração dessa divisão de memória precisa de validação no dispositivo. A compilação com Windows 2.5.3 é uma alternativa ainda não executada, não um requisito para gerar o arquivo no Mac.
+O emulador comum pode apresentar sua falha conhecida de periférico não implementado; o teste local usou a variante de diagnóstico corrigida.
+
+O BAILE reserva 405.504 bytes para dados do usuário e mantém o boot do SDK. A migração a partir de outros firmwares não foi validada de forma abrangente. A compilação com Windows 2.5.3 é uma alternativa ainda não executada, não um requisito para gerar o arquivo no Mac.
 
 Veja [STATUS](STATUS.md), [compilação](docs/BUILDING.md), [arquitetura](docs/ARCHITECTURE.md) e [direitos dos assets](assets/README.md).

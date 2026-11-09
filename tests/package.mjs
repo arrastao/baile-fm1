@@ -3,14 +3,14 @@ import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 vm.runInThisContext(fs.readFileSync('sdk/WebUpdate.js','utf8'));
-const file=process.argv[2]||'build/BAILE-0.6-MAC.fwsc';
+const file=process.argv[2]||'build/BAILE-0.7-FM1.fwsc';
 const bytes=fs.readFileSync(file),pkg=FM1Web.inspectPackage(bytes);
 const baseline=fs.readFileSync('../../outputs/Tamborzao-FM1/Tamborzao-FM1-0.1.fwsc');
 const old=FM1Web.inspectPackage(baseline);
 function decipher(input,key){let out=Buffer.from(input);for(let i=0;i<out.length;i++){out[i]^=key&255;key=((key<<1)^((key&32768)?0x1021:0))&65535;}return out;}
 function flash(p){let entry=decipher(p.image.subarray(64,144),65535);let start=entry.readUInt32LE(8),size=entry.readUInt32LE(12);return Buffer.from(p.image.subarray(start,start+size));}
 const f=flash(pkg),before=flash(old);
-assert.equal(pkg.product,'FM-1_8490160');
+assert.equal(pkg.product,'FM-1_8490170');
 assert.deepEqual(f.subarray(0,16384),before.subarray(0,16384));
 assert.deepEqual(pkg.loader,old.loader);
 const app=fs.readFileSync('build/dx7/generated/application.bin');

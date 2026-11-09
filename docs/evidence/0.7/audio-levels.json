@@ -1,0 +1,30 @@
+{
+  "kits": {
+    "tamborzao": {
+      "rms_dbfs": -31.04066416921515,
+      "peak_dbfs": -14.75262637283029,
+      "all_pads_every_step": {
+        "rms_dbfs": -24.11852725407529,
+        "peak_dbfs": -10.577227047126447
+      }
+    },
+    "voltmix": {
+      "rms_dbfs": -32.11567607103559,
+      "peak_dbfs": -13.02430856614826,
+      "all_pads_every_step": {
+        "rms_dbfs": -26.297894237843696,
+        "peak_dbfs": -12.559527486001247
+      }
+    },
+    "bolha": {
+      "rms_dbfs": -31.780726482513472,
+      "peak_dbfs": -13.358104595955819,
+      "all_pads_every_step": {
+        "rms_dbfs": -25.934392039765054,
+        "peak_dbfs": -13.443009435292623
+      }
+    }
+  },
+  "hardware_tested": false,
+  "kit_rms_spread_db": 1.0750119018204352
+}

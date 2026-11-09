@@ -1,0 +1,51 @@
+{
+  "upstream_commit": "4c7496daac04a95ff10d1afdcc8f9ead2dbabc41",
+  "hardware_tested": false,
+  "kits": {
+    "tamborzao": {
+      "bank_sha256": "aeab69245843c833fda9bc67d53354fce73d29862fd632f2daa94892bd9abd33",
+      "masks": [
+        1089,
+        4369,
+        72,
+        20480
+      ],
+      "audio_peak": 0.18296527862548828
+    },
+    "voltmix": {
+      "bank_sha256": "8aa149bd52c63e51d5d33a87e956c5914e2cf3f678507b4622def7522e2fec50",
+      "masks": [
+        1097,
+        4112,
+        21845,
+        49159
+      ],
+      "audio_peak": 0.22324645519256592
+    },
+    "bolha": {
+      "bank_sha256": "74de3ce28a699121c691fbcb607ee2d43e6d1c61788cecf26edc4519569a0a2e",
+      "masks": [
+        33025,
+        13384,
+        5192,
+        4369
+      ],
+      "audio_peak": 0.2148299217224121
+    }
+  },
+  "checks": [
+    "three-second splash cannot be skipped",
+    "embedded banks byte-exact",
+    "source note masks",
+    "three finite audible previews",
+    "independent session edits",
+    "single-bar loops and no hidden second-bar edits",
+    "preset wrapping",
+    "FX bounds",
+    "queued kit change",
+    "no storage writes",
+    "default kit on reboot",
+    "saturator exact bypass and clipping bounds",
+    "reverb changes rendered audio"
+  ]
+}

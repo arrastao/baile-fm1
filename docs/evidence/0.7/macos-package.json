@@ -1,0 +1,17 @@
+{
+  "app_bytes": 551464,
+  "limit": 584993,
+  "fits": true,
+  "build_id": "da94a8f3a61e5003fded44d318227549a60e5c32d373883d3157434da7bd0950",
+  "product": "FM-1_8490170",
+  "toolchain": "JieLi Linux 20260730.1 / PI32v2 clang 4.0.1 r3 via Blink on macOS",
+  "toolchain_sha256": "c45189ee624de0430deb0db02e6dce171fb5538e7fe323e3964dc8ac6236240f",
+  "hardware_validated": false,
+  "firmware": "BAILE-0.7-FM1.fwsc",
+  "package_bytes": 590388,
+  "flash_image_bytes": 569344,
+  "package_sha256": "ec1ac0da4085b2509fc11cec100a1870b4302da0c3ebae3e168b395289be6361",
+  "user_bytes": 405504,
+  "packager": "Python port of pinned SDK Package.cs; original SDK boot; explicit BAILE user partition",
+  "application_limit": 584993
+}

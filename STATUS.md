@@ -1,3 +1,15 @@
+# BAILE 0.7 — stable
+
+Promoted on 2026-11-09 after the user reported that BAILE 0.7 was working perfectly on their physical FM-1. This is a user-reported hardware result, separate from the automated host and emulator checks. The promotion does not rebuild or modify the tested firmware.
+
+- Firmware: `BAILE-0.7-FM1.fwsc` (590388 bytes).
+- SHA-256: `ec1ac0da4085b2509fc11cec100a1870b4302da0c3ebae3e168b395289be6361`.
+- Includes normalized samples for Tamborzão, Voltmix and Beat Bolha, single-bar patterns, approved Bolha BRILHANTE and the three-second splash.
+- Original WAVs and earlier encoded banks are preserved.
+- Existing limitations: pattern edits last for the current session; kit switching is observed by the control task rather than sample-accurate; migration from every other firmware has not been tested.
+
+The build-time `hardware_tested` fields and older development labels are historical evidence and remain unchanged. The following records describe earlier versions at the time they were built.
+
 # BAILE 0.6 — three-second splash
 
 The complete boot artwork is held for three seconds after the first LCD frame is submitted. Panel controls cannot skip this interval; screen and engine servicing continue. After the hold, Tamborzão opens normally.

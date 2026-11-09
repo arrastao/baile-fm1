@@ -1,0 +1,164 @@
+{
+  "method": "constant gain; max 50 ms RMS",
+  "target_dbfs": -16,
+  "peak_ceiling_dbfs": -3,
+  "max_boost_db": 18,
+  "samples": [
+    {
+      "file": "tamborzao-01-KICK.wav",
+      "original_sha256": "29e5e0fe2f92e464563ed3f3455440f5cc71de6f89f317a6704be0500e76e26e",
+      "gain_db": -9.670734247343105,
+      "before": {
+        "peak_dbfs": -0.29082800900417655,
+        "attack_rms_dbfs": -6.3292657526568945
+      },
+      "decoded_after": {
+        "peak_dbfs": -9.868683902839953,
+        "attack_rms_dbfs": -15.999693947093338
+      }
+    },
+    {
+      "file": "tamborzao-02-ATAK.wav",
+      "original_sha256": "6bac7abc5555d836e5d045e50bf16f444335491a4474e7d3bd770de03be4de26",
+      "gain_db": -6.184923026753921,
+      "before": {
+        "peak_dbfs": -0.31608169574739453,
+        "attack_rms_dbfs": -9.815076973246079
+      },
+      "decoded_after": {
+        "peak_dbfs": -6.545621527460432,
+        "attack_rms_dbfs": -16.002012363356407
+      }
+    },
+    {
+      "file": "tamborzao-03-SLAP.wav",
+      "original_sha256": "93c2b0a12a8a2115ff768276c5df4998fbab5d2ab91614090c19ce3b651bbbeb",
+      "gain_db": 2.196375232330542,
+      "before": {
+        "peak_dbfs": -5.593381292643153,
+        "attack_rms_dbfs": -18.196375232330542
+      },
+      "decoded_after": {
+        "peak_dbfs": -3.42390484805567,
+        "attack_rms_dbfs": -15.999018544727843
+      }
+    },
+    {
+      "file": "tamborzao-04-LOW.wav",
+      "original_sha256": "058c4a096f133b42e85bcf82e680bc838e7a83504e0ec6eeca85487d12d1190f",
+      "gain_db": -3.885992974942681,
+      "before": {
+        "peak_dbfs": -5.474583477822486,
+        "attack_rms_dbfs": -12.114007025057319
+      },
+      "decoded_after": {
+        "peak_dbfs": -9.362722382886592,
+        "attack_rms_dbfs": -15.999967782834776
+      }
+    },
+    {
+      "file": "voltmix-1.wav",
+      "original_sha256": "754a9b39e2122d9267fb45d6c12e94e5d292c3fd542896152cfe8aa52287d80d",
+      "gain_db": -1.7645486271149409,
+      "before": {
+        "peak_dbfs": -11.999946665424783,
+        "attack_rms_dbfs": -14.23545137288506
+      },
+      "decoded_after": {
+        "peak_dbfs": -13.74869741471482,
+        "attack_rms_dbfs": -16.000095117211227
+      }
+    },
+    {
+      "file": "voltmix-2.wav",
+      "original_sha256": "f741e289791ac6ccd17d72b712d90d671b793baaf7b36b6c90e4a86ca5515d76",
+      "gain_db": 4.1672140678153475,
+      "before": {
+        "peak_dbfs": -11.999946665424783,
+        "attack_rms_dbfs": -20.167214067815348
+      },
+      "decoded_after": {
+        "peak_dbfs": -7.650363714896065,
+        "attack_rms_dbfs": -15.998713485026572
+      }
+    },
+    {
+      "file": "voltmix-3.wav",
+      "original_sha256": "9913741d441c87bf11b1719731bbc9668c954b6b7a60ae960d0ddc7ee91d4fba",
+      "gain_db": 18,
+      "before": {
+        "peak_dbfs": -21.713953099146195,
+        "attack_rms_dbfs": -37.530662627015545
+      },
+      "decoded_after": {
+        "peak_dbfs": -3.7654995204419635,
+        "attack_rms_dbfs": -19.54200424225836
+      }
+    },
+    {
+      "file": "voltmix-4.wav",
+      "original_sha256": "3952e0baecc8323ab44c8771334cc7c143aa873e7976e560e5c7770eb6b4b877",
+      "gain_db": 8.999946665424783,
+      "before": {
+        "peak_dbfs": -11.999946665424783,
+        "attack_rms_dbfs": -26.62887697348082
+      },
+      "decoded_after": {
+        "peak_dbfs": -3.117221306893683,
+        "attack_rms_dbfs": -17.635510858654943
+      }
+    },
+    {
+      "file": "bolha-1.wav",
+      "original_sha256": "a34e24c9e4dfa3a72854558556a233c067f4e10680e5caa2b813c3428d60f222",
+      "gain_db": 0.9216956036813784,
+      "before": {
+        "peak_dbfs": -12.003113038740631,
+        "attack_rms_dbfs": -16.92169560368138
+      },
+      "decoded_after": {
+        "peak_dbfs": -11.080576817865392,
+        "attack_rms_dbfs": -15.99920748604786
+      }
+    },
+    {
+      "file": "bolha-2.wav",
+      "original_sha256": "1fe3703ac16b0f9d2c4545ba646fd6db5037b871138c0e141b0730127a892d72",
+      "gain_db": 1.8003441019848694,
+      "before": {
+        "peak_dbfs": -12.009449250307739,
+        "attack_rms_dbfs": -17.80034410198487
+      },
+      "decoded_after": {
+        "peak_dbfs": -10.214834768307632,
+        "attack_rms_dbfs": -15.999762242592046
+      }
+    },
+    {
+      "file": "bolha-3.wav",
+      "original_sha256": "b25b03004f6c219f82c2acd3e80f0c793038279fac719b9b5b48c728b8b5622c",
+      "gain_db": 3.5119216892029925,
+      "before": {
+        "peak_dbfs": -12.302748759519826,
+        "attack_rms_dbfs": -19.511921689202993
+      },
+      "decoded_after": {
+        "peak_dbfs": -8.637513105714532,
+        "attack_rms_dbfs": -15.986625090972836
+      }
+    },
+    {
+      "file": "bolha-4.wav",
+      "original_sha256": "bbf7fe1de16c378a80d57f2f4127d7064678aad7c260c5e0e280d9a06d2d64cb",
+      "gain_db": 4.532347544069111,
+      "before": {
+        "peak_dbfs": -11.999946665424783,
+        "attack_rms_dbfs": -20.53234754406911
+      },
+      "decoded_after": {
+        "peak_dbfs": -7.475614359870175,
+        "attack_rms_dbfs": -15.99981290016153
+      }
+    }
+  ]
+}
