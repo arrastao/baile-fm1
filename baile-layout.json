@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "upstream_commit": "4c7496daac04a95ff10d1afdcc8f9ead2dbabc41",
+  "user_bytes": 405504,
+  "upstream_user_bytes": 536576,
+  "boot": "unmodified SDK resources",
+  "reason": "Embed all three original sample banks and supplied artwork in the application image.",
+  "hardware_validated": false
+}

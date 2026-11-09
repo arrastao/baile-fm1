@@ -1,11 +1,10 @@
 {
-  "app_bytes": 500040,
+  "app_bytes": 551528,
   "limit": 584993,
-  "package_bytes": 623156,
-  "flash_image_bytes": 602112,
-  "sha256": "71334b801068d29e006290068c2ef960e7d79a556be6d81136a7c2d731f41c58",
-  "build_id": "c32677e2f370af9646d7120e2e5956d6e1ec0f80e267ef027945cda799b6d30e",
-  "product": "FM-1_8490133",
+  "fits": true,
+  "build_id": "092afbf684d7fbaf0fc48db323a0bc6cc31ccd0795fd3bbb0a397e8a68a961f8",
+  "product": "FM-1_8490140",
+  "toolchain": "JieLi Linux 20260730.1 / PI32v2 clang 4.0.1 r3 via Blink on macOS",
   "toolchain_sha256": "c45189ee624de0430deb0db02e6dce171fb5538e7fe323e3964dc8ac6236240f",
   "hardware_validated": false
 }

@@ -216,7 +216,9 @@ EXPORT("sim_boot") void sim_boot(unsigned clear)
     /* Bit 0 clears storage; bit 1 previews the device startup animation. */
     if (clear & 1U) {
         memset(flash, 255, sizeof flash);
-        /* Blank writable storage is intentional: BAILE uses its built-in bank. */
+        unsigned bytes;
+        const uint8_t *factory = sampledrum_factory(&bytes);
+        if (bytes <= GROOVE_SAMPLE_BYTES) memcpy(flash + GROOVE_SAMPLE_OFFSET, factory, bytes);
         ++flash_revision;
     }
     memset(&controls, 0, sizeof controls); controls.battery = 900; controls.knob = 1023;
@@ -356,8 +358,6 @@ EXPORT("sim_render") const float *sim_render(void)
     while (midi_read != midi_write) {
         send(midi[midi_read].data, midi[midi_read].count); midi_read = (midi_read + 1) % MIDI_QUEUE;
     }
-    extern void baile_before_render(void);
-    baile_before_render();
     (void)fm1_engine_render(previous, FM1_BLOCK_FRAMES);
     fm1_output_mix(previous);
     frames += FM1_BLOCK_FRAMES; uint32_t next = (uint32_t)(frames * 1000U / 44100U);
@@ -472,11 +472,3 @@ int fm1_bluetooth_audio_read(int16_t *pcm, unsigned frames)
 { return pcm && frames == FM1_BLOCK_FRAMES ? 0 : -1; }
 int fm1_usb_audio_write(const int32_t *pcm, unsigned frames)
 { return pcm && frames == FM1_BLOCK_FRAMES ? 0 : -1; }
-
-#include "baile.h"
-EXPORT("baile_state") const uint32_t *baile_state(void){
- static uint32_t result[17];for(unsigned i=0;i<9;++i)result[i]=baile_value(i);
- for(unsigned i=0;i<4;++i)result[9+i]=(uint32_t)groove_drum_steps(0,baile_pad(i));
- struct groove_view v;groove_get_view(0,0,&v);result[13]=v.playing;result[14]=v.play_step;result[15]=v.tempo;
- result[16]=groove_project_dirty();return result;
-}

@@ -782,7 +782,8 @@ void groove_project_init(void)
     memset(&settings, 0, sizeof settings);
     groove_midi_defaults(&settings.midi);
     memcpy(project_name, "UNTITLED    ", 12);
-    restore_pending = 2;
+    /* BAILE starts from its embedded factory kit; never restore another app session. */
+    restore_pending = 0;
     session_pending = 0; session_dirty = 0;
     role_pending = 2;
     settings_dirty = 0;
@@ -800,11 +801,8 @@ void groove_project_poll(void)
             return;
         if (!r) {
             settings = record.settings;
-            /* Dedicated instrument: local playback and internal clock on every boot. */
-            groove_midi_defaults(&settings.midi);
-            settings.clock = GROOVE_CLOCK_INTERNAL;
             groove_midi_config_apply(&settings.midi);
-            groove_clock_set(GROOVE_CLOCK_INTERNAL);
+            groove_clock_set(settings.clock);
             role_pending = 2;
         }
         restore_pending = 1;
@@ -814,8 +812,7 @@ void groove_project_poll(void)
         if (r == FM1_FLASH_BUSY) return;
         session_pending = 1; if (r) settings_result = r;
     }
-    /* Boot into TAMBORZAO; saved projects remain available from the project menu. */
-    if (restore_pending && groove_factory_load(0) != FM1_FLASH_BUSY) {
+    if (restore_pending && groove_project_load_slot(settings.slot) != FM1_FLASH_BUSY) {
         restore_pending = 0;
         groove_project_clean();
     }

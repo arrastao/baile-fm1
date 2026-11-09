@@ -1,9 +1,52 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BAILE · Ritmo brasileiro</title><link rel="stylesheet" href="style.css"></head>
-<body data-kit="0"><div id="boot-art" role="img" aria-label="BAILE by MULÚ"><img src="../assets/art/boot-reference.png" alt="BAILE by MULÚ"></div><main><header><a class="brand" href="#">BAILE<span>RITMO BRASILEIRO</span></a><span class="version">FM–1 / LAB 0.3</span><button id="play" class="play" disabled>Carregando…</button></header>
-<section class="instrument" aria-label="Instrumento BAILE"><div class="left"><div class="screen"><canvas id="lcd" width="240" height="240" aria-label="Tela do FM-1"></canvas></div><div class="encoders"><div><span>PRESETS</span><div class="pair"><button data-encoder="6" data-delta="-1" aria-label="Preset anterior">−</button><b>KIT</b><button data-encoder="6" data-delta="1" aria-label="Próximo preset">+</button></div></div><div><span>ALGORITHM</span><div class="pair"><button data-encoder="1" data-delta="-1" aria-label="Trilha anterior">−</button><b>TRILHA</b><button data-encoder="1" data-delta="1" aria-label="Próxima trilha">+</button></div></div></div><p class="hint">Gire os controles com − / +.<br>Selecione uma trilha e toque nos passos.</p></div>
-<div class="editor"><div class="eyebrow">01 — PRESETS</div><nav id="presets" aria-label="Presets"></nav><div class="kit-art"><img id="kit-title" src="../assets/art/tamborzao-title.png" alt="Tamborzão"></div><div class="current"><h1 id="name">Tamborzão</h1><span id="provenance">Kit original</span></div><p id="status" role="status" aria-live="polite">Preparando o instrumento…</p>
-<div class="track-head"><span class="eyebrow">02 — TRILHAS</span><span>ALGORITHM</span></div><div id="tracks" role="group" aria-label="Trilhas do kit"></div>
-<div class="step-head"><div><span class="eyebrow">03 — PATTERN</span><p id="selected">Bumbo</p></div><div class="pages" role="group" aria-label="Compasso"><button data-page="0" aria-pressed="true">1–16</button><button data-page="1" aria-pressed="false">17–32</button></div></div><div id="steps" aria-label="Passos da trilha"></div>
-<p class="hint">Cada tecla liga ou desliga um passo. OCT − / + troca o compasso.<br>As edições ficam guardadas enquanto esta página estiver aberta.</p></div></section>
-<section class="knobs" aria-label="Controles do som"><label>K1 <b>Saturator</b><output id="sat-out">0%</output><input id="sat" type="range" min="0" max="100" value="0" data-encoder="2"></label><label>K2 <b>Reverb</b><output id="rev-out">0%</output><input id="rev" type="range" min="0" max="15" value="0" data-encoder="3"></label><label>K3 <b>BPM</b><output id="bpm-out">130</output><input id="bpm" type="range" min="40" max="240" value="130" data-encoder="4"></label><label>K4 <b>Swing</b><output id="swing-out">0%</output><input id="swing" type="range" min="0" max="50" value="0" data-encoder="5"></label></section>
-<footer><span>Tamborzão: seus timbres e pattern originais.<br>Voltmix, Beat Bolha e Mandelão: esboços provisórios com síntese 808.</span><span>Prévia do código C • instalação no aparelho pendente<br>Espaço: tocar/parar · ← →: trilha · ↑ ↓: preset</span></footer><p id="error" role="alert"></p></main><script type="module" src="app.js"></script></body></html>
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BAILE · reconstrução FM1 Open</title>
+<style>
+:root{font-family:ui-monospace,monospace;color:#eeeae1;background:#111710;color-scheme:dark}*{box-sizing:border-box}body{max-width:880px;margin:auto;padding:32px 22px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}h1{font-size:28px;margin:0;color:#ff648a}small{color:#a9b49d}main{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}.device{padding:20px;background:#090b08;border:2px solid #526444;border-radius:28px;box-shadow:0 20px 50px #0008}canvas{width:100%;aspect-ratio:1;image-rendering:pixelated;border-radius:5px;display:block;cursor:pointer}button,select{font:inherit;border:1px solid #526444;padding:12px;border-radius:7px;color:#eeeae1;background:#253021;cursor:pointer;touch-action:manipulation}button:hover{background:#36472f}button:focus-visible,select:focus-visible{outline:3px solid #03e4ec}button.primary{background:#ffda00;color:#111;font-weight:bold;width:100%;margin-bottom:16px}label{display:block;font-size:13px;margin:0 0 8px}select{width:100%;margin-bottom:18px}.pair{display:flex;gap:10px;align-items:center;margin-bottom:15px}.pair button{flex:1}.knob{display:flex;align-items:center;gap:8px;margin-bottom:10px}.knob span{flex:1}.knob output{width:40px;text-align:right;color:#02e6ee}.keys{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:22px}.keys button{padding:10px 0}.keys .on{background:#02d9df;color:#000}.keys .play{outline:2px solid #ff5d8c}.status{min-height:38px;font-size:13px;color:#adbb9e;line-height:1.6}p{font-size:13px;line-height:1.6;color:#b7c1ae}footer{margin-top:24px;font-size:12px;line-height:1.6;color:#8f9c86}@media(max-width:650px){main{grid-template-columns:1fr}.device{max-width:400px;margin:auto;width:100%}body{padding:20px 16px}}
+</style>
+<header><h1>BAILE <small>by MULÚ</small></h1><small>FM1 OPEN · 0.4 DEV</small></header>
+<main><section><div class="device"><canvas id="lcd" width="240" height="240" aria-label="Tela do BAILE; toque uma trilha para selecioná-la"></canvas></div><div id="steps" class="keys" aria-label="16 passos do compasso"></div><p>Clique em uma trilha na tela e use os passos para editar.</p></section>
+<section><button id="play" class="primary" disabled>CARREGANDO…</button><label for="kit">PRESETS · KIT</label><select id="kit"><option value="0">Tamborzão</option><option value="1">Voltmix</option><option value="2">Beat Bolha</option></select>
+<label>ALGORITHM · TRILHA</label><div class="pair"><button id="prev">−</button><span id="part">BUMBO</span><button id="next">+</button></div>
+<div id="knobs"></div><label>OCT −/+ · COMPASSO</label><div class="pair"><button id="bar1">1 / 2</button><button id="bar2">2 / 2</button></div><div id="status" class="status" role="status">Iniciando…</div><p>As alterações ficam nesta sessão. Ao reiniciar, abre o Tamborzão original.</p></section></main>
+<footer>Prévia local do código C reconstruído. Áudio e interface testáveis aqui; instalação no aparelho ainda pendente.</footer>
+<script>
+'use strict';
+const B64='/*BAILE_WASM*/';
+const bytes=Uint8Array.from(atob(B64),v=>v.charCodeAt(0));
+const names=[['BUMBO','ATAQUE','CONGA SLAP','CONGA GRAVE'],['BUMBO','CAIXA','CHIMBAL','ARO'],['BUMBO','CAIXA','BRILHANTE','RITMADA']];
+let core,engine,audio,timer,transfer=false,values=new Uint32Array(15);
+const $=id=>document.getElementById(id),ctx=$('lcd').getContext('2d'),bitmap=ctx.createImageData(240,240);
+function paint(pixels,state){
+ values=state;
+ for(let i=0;i<pixels.length;i++){let p=pixels[i],at=i*4;bitmap.data[at]=(p>>11)*255/31;bitmap.data[at+1]=((p>>5)&63)*255/63;bitmap.data[at+2]=(p&31)*255/31;bitmap.data[at+3]=255;}
+ ctx.putImageData(bitmap,0,0);$('part').textContent=names[state[0]][state[2]];
+ $('kit').value=state[1]?state[1]-1:state[0];$('play').textContent=state[13]?'PARAR':'TOCAR';
+ $('status').textContent=state[8]?'Não foi possível carregar o kit.':state[1]?'Troca de kit no próximo compasso.':`${['Tamborzão','Voltmix','Beat Bolha'][state[0]]} · compasso ${state[3]+1}/2`;
+ for(let i=0;i<4;i++)$('value'+i).value=state[i+4];
+ for(let i=0;i<16;i++){let n=state[3]*16+i,b=$('step'+i);b.classList.toggle('on',!!((state[9+state[2]]>>>n)&1));b.classList.toggle('play',!!state[13]&&state[14]===n);b.setAttribute('aria-pressed',!!((state[9+state[2]]>>>n)&1));}
+ $('bar1').setAttribute('aria-pressed',state[3]===0);$('bar2').setAttribute('aria-pressed',state[3]===1);
+}
+function read(c){paint(new Uint16Array(c.memory.buffer,c.sim_pixels(),57600),new Uint32Array(c.memory.buffer,c.baile_inspect(),15).slice());}
+function command(kind,index,value){if(transfer)return;if(engine)engine.port.postMessage({kind,index,value});else{core.sim_control(kind,index,value);read(core);}}
+function press(index){command(0,index,1);command(0,index,0);}
+for(let i=0;i<16;i++){let b=document.createElement('button');b.id='step'+i;b.textContent=i+1;b.setAttribute('aria-label',`Alternar passo ${i+1}`);b.onclick=()=>{const keys=[0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26];command(1,keys[i],1);command(1,keys[i],0);};$('steps').append(b);}
+['K1 SATURATOR','K2 REVERB','K3 BPM','K4 SWING'].forEach((name,i)=>{let row=document.createElement('div');row.className='knob';let label=document.createElement('span');label.textContent=name;row.append(label);for(const delta of [-1,1]){let b=document.createElement('button');b.textContent=delta<0?'−':'+';b.setAttribute('aria-label',`${delta<0?'Diminuir':'Aumentar'} ${name}`);b.onclick=()=>command(2,i+2,delta);row.append(b);if(delta<0){let v=document.createElement('output');v.id='value'+i;row.append(v);}}$('knobs').append(row);});
+$('kit').onchange=()=>command(2,6,+$('kit').value-(values[1]?values[1]-1:values[0]));
+$('prev').onclick=()=>command(2,1,-1);$('next').onclick=()=>command(2,1,1);
+$('bar1').onclick=()=>press(0);$('bar2').onclick=()=>press(1);
+$('lcd').onclick=e=>{let r=$('lcd').getBoundingClientRect(),y=(e.clientY-r.top)*240/r.height,p=Math.floor((y-59)/24);if(y>=59&&p<4)command(2,1,p-values[2]);};
+const worklet=`class Baile extends AudioWorkletProcessor {
+ constructor(options){super();this.c=new WebAssembly.Instance(new WebAssembly.Module(options.processorOptions.wasm),{}).exports;this.c._initialize();let memory=options.processorOptions.memory;this.c.memory.grow((memory.byteLength-this.c.memory.buffer.byteLength)/65536);new Uint8Array(this.c.memory.buffer).set(new Uint8Array(memory));this.count=0;this.port.onmessage=e=>{let m=e.data;this.c.sim_control(m.kind,m.index,m.value);};}
+ process(inputs,outputs){const c=this.c,ptr=c.sim_render(),v=new Float32Array(c.memory.buffer,ptr,256);for(let i=0;i<128;i++){outputs[0][0][i]=v[i*2];outputs[0][1][i]=v[i*2+1];}if(++this.count%16===0){const pixels=new Uint16Array(c.memory.buffer,c.sim_pixels(),57600).slice(),state=new Uint32Array(c.memory.buffer,c.baile_inspect(),15).slice();this.port.postMessage({pixels,state},[pixels.buffer,state.buffer]);}return true;}}
+registerProcessor('baile',Baile);`;
+async function enableAudio(){
+ if(audio){await audio.resume();return;}
+ transfer=true;clearInterval(timer);
+ try{audio=new AudioContext({sampleRate:44100});await audio.resume();const url=URL.createObjectURL(new Blob([worklet],{type:'text/javascript'}));try{await audio.audioWorklet.addModule(url);}finally{URL.revokeObjectURL(url);}
+ engine=new AudioWorkletNode(audio,'baile',{numberOfInputs:0,numberOfOutputs:1,outputChannelCount:[2],processorOptions:{wasm:bytes,memory:core.memory.buffer.slice(0)}});
+ engine.port.onmessage=e=>paint(e.data.pixels,e.data.state);engine.onprocessorerror=()=>{$('status').textContent='Erro no áudio. Recarregue a prévia.';};engine.connect(audio.destination);
+ }catch(e){if(audio)await audio.close();audio=null;engine=null;startTimer();throw e;}finally{transfer=false;}
+}
+$('play').onclick=async()=>{try{await enableAudio();press(12);}catch(e){$('status').textContent='Não foi possível iniciar o áudio: '+e.message;}};
+function startTimer(){timer=setInterval(()=>{for(let n=0;n<10;n++)core.sim_render();read(core);},29);}
+try{core=new WebAssembly.Instance(new WebAssembly.Module(bytes),{}).exports;core._initialize();core.sim_boot(3);startTimer();$('play').disabled=false;}catch(e){$('status').textContent='Falha na prévia: '+e.message;}
+</script></html>

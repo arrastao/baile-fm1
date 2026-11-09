@@ -9,7 +9,7 @@ import sys
 import os
 
 AREA, ENTRY, APPDATA = 0x4000, 0x02000120, 0x120
-FLASH_LIMIT, USER_SIZE, BT_SIZE, MIN_VM = 0xFF000, 405504, 4096, 32768
+FLASH_LIMIT, USER_SIZE, BT_SIZE, MIN_VM = 0xFF000, 536576, 4096, 32768
 PUBLIC = 0x980F
 
 
@@ -110,7 +110,7 @@ def encode_boot(plain):
     return bytes(r)
 
 
-def build_flash(app, d, end, vm_end):
+def build_flash(app, d, end, vm_end, user_size=USER_SIZE):
     boot = resource(d, 'uboot.boot', 14488)
     config = resource(d, 'boot-config.bin', 721)
     tool = resource(d, 'cfg_tool.bin', 383)
@@ -143,7 +143,7 @@ def build_flash(app, d, end, vm_end):
     img.record(AREA + 160, 'BTIF', 65535, vm_end, BT_SIZE, 0x8192, 1, 0x4f545541)
     img.record(AREA, 'app_area_head', crc(img.b, AREA + 32, payload - 32), ENTRY, payload, 0xff83, 0, None)
     reserved = AREA + payload
-    img.record(reserved + 32, 'USER', 65535, FLASH_LIMIT - USER_SIZE, USER_SIZE, 0x8192, 1, 0x4f545541)
+    img.record(reserved + 32, 'USER', 65535, FLASH_LIMIT - user_size, user_size, 0x8192, 1, 0x4f545541)
     img.record(reserved, 'EXT_RESERVED', crc(img.b, reserved + 32, 32), 32, 64, 0xff93, 1, None)
     for p in range(0, payload + 64, 32):
         cipher(img.b, AREA + p, min(32, payload + 64 - p), PUBLIC ^ (p >> 2))
@@ -187,34 +187,20 @@ def wrap(flash, loader, product):
     return bytes(out)
 
 
-def create(app, resources, product, boot_package=None):
+def create(app, resources, product, user_size=USER_SIZE):
+    if not isinstance(user_size, int) or user_size < 4096 or user_size % 4096:
+        raise ValueError("User partition must be whole 4096-byte sectors.")
     if not re.fullmatch(r'FM-1_8[0-9]{6}', product):
         raise ValueError('Invalid FM1 update identity.')
-    limit = FLASH_LIMIT - USER_SIZE - BT_SIZE - MIN_VM - AREA - APPDATA - 383 - 64
+    limit = FLASH_LIMIT - user_size - BT_SIZE - MIN_VM - AREA - APPDATA - 383 - 64
     if not app or len(app) > limit:
         raise ValueError('Application does not fit the FM1 layout (%d > %d).' % (len(app), limit))
-    size = 0x93000
-    if roundup(AREA + APPDATA + len(app) + 383 + 64, 4096) > size:
-        raise ValueError("App exceeds the migration image")
-    user_at = FLASH_LIMIT - USER_SIZE
+    size = roundup(AREA + APPDATA + len(app) + 383 + 64, 4096)
+    user_at = FLASH_LIMIT - user_size
     vm_end = user_at - BT_SIZE
     if size > vm_end - MIN_VM:
         raise ValueError('Insufficient FM1 settings space.')
-    flash = build_flash(app, resources, size, vm_end)
-    # Tessera's migration checks the full V15 boot area byte-for-byte.
-    # The original signed/encoded vendor boot resources remain untouched.
-    from pathlib import Path
-    stock_path = Path(boot_package) if boot_package else Path(resources).parents[1] / 'firmware/FM-1_015.fwsc'
-    stock = stock_path.read_bytes()
-    import hashlib
-    expected = 'd017fb65e70aca97ee29d944470c3515a74581df5c0576bf70de917c7b2b61d5' if boot_package else 'db1642b2b6fa5c2cccb11ffd13878068bb28601678d3644049f99dc40e7edb8a'
-    if hashlib.sha256(stock).hexdigest() != expected: raise ValueError('Unrecognized stock boot package; use the unmodified official file')
-    logical = b''.join(stock[i*48:i*48+47] for i in range(20)) + stock[960:]
-    entry = bytearray(logical[64:144]); cipher(entry, 0, 80, 0xFFFF)
-    stock_at = int.from_bytes(entry[8:12], 'little')
-    stock_head = logical[stock_at:stock_at+AREA]
-    if len(stock_head) != AREA: raise ValueError('Short stock boot area')
-    flash.b[:AREA] = stock_head
+    flash = build_flash(app, resources, size, vm_end, user_size)
     return wrap(flash, open(os.path.join(resources, 'ota.bin'), 'rb').read(), product), size, limit
 
 

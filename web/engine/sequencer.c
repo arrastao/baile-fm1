@@ -826,10 +826,3 @@ __attribute__((cold, minsize)) int groove_sequence_chord(unsigned track, unsigne
     groove_project_touch();
     return 0;
 }
-
-/* Control owner, immediately before the next portable render block. The SDK
- * archive does not expose this phase probe; the hardware MVP uses control polling. */
-unsigned groove_baile_bar_due(void) {
-    const struct clock_state *c=&sequence_clock;
-    return !clock_mode && c->playing && !c->first && !(c->next[0]%16) && c->phase>=step_period(c);
-}

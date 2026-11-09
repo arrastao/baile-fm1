@@ -1,15 +1,14 @@
 /* SPDX-License-Identifier: GPL-3.0-only WITH GPL-3.0-linking-exception */
 #include "audio_output.h"
+#include "baile.h"
 #include "fm1_engine_control.h"
 #include "fm1_audio_io.h"
-#include "baile.h"
-static unsigned sat_smooth;
 
 static unsigned output_gain;
 static int32_t usb_pcm[FM1_BLOCK_WORDS] __attribute__((aligned(32)));
 static int16_t bluetooth_pcm[FM1_BLOCK_WORDS] __attribute__((aligned(32)));
 
-void fm1_output_reset(void) { output_gain = sat_smooth = 0; }
+void fm1_output_reset(void) { output_gain = 0; }
 static inline __attribute__((always_inline)) int32_t limit(int64_t value)
 {
     /* Bias signed 24-bit PCM into [0, 2^24). Unsigned arithmetic also
@@ -21,19 +20,7 @@ static inline __attribute__((always_inline)) int32_t limit(int64_t value)
 FM1_AUDIO_CODE void fm1_output_mix(int32_t *output)
 {
     if (!output) return;
-    /* Smooth drive. Integer cubic soft saturation, unity bypass at zero. */
-    unsigned drive=baile_saturation*256U;
-    for(unsigned i=0;i<FM1_BLOCK_WORDS;i+=2){
-        if(sat_smooth<drive)++sat_smooth;else if(sat_smooth>drive)--sat_smooth;
-        unsigned amount=sat_smooth>>8;
-        if(!amount)continue;
-        for(unsigned ch=0;ch<2;++ch){
-            int64_t dry=output[i+ch],x=dry*(100+amount*7)/100;
-            if(x>8388607)x=8388607;if(x< -8388607)x= -8388607;
-            int64_t x2=(x*x)>>23,wet=x-(((x2*x)>>23)/3);
-            output[i+ch]=(int32_t)((dry*(100-amount)+wet*amount)/100);
-        }
-    }
+    baile_saturate(output);
     unsigned target = fm1_engine_output_level();
     if (target > 127U) target = 127U;
     int delta = (int)target - (int)output_gain;

@@ -1,0 +1,185 @@
+{
+  "name": "TAMBORZAO",
+  "tempo": 130,
+  "beats": 8.0,
+  "steps": 32,
+  "samples": [
+    {
+      "slot": 0,
+      "name": "KICK",
+      "source_file": "R8 Ambo Kick.wav",
+      "original_midi": 36,
+      "fm1_midi": 36,
+      "rate": 32000,
+      "frames": 22154,
+      "sha256_original": "1b6d2748d745d13a8df1081957ca8005d7350f1ef8ce897873683435b28b2127"
+    },
+    {
+      "slot": 1,
+      "name": "ATAK",
+      "source_file": "R8-POWR-19-ATAK_T1.wav",
+      "original_midi": 37,
+      "fm1_midi": 38,
+      "rate": 32000,
+      "frames": 40498,
+      "sha256_original": "40af7484724dc6082cff42f5dce965e3cfd9189083ee50313e14947a1a876c7a"
+    },
+    {
+      "slot": 2,
+      "name": "SLAP",
+      "source_file": "R8 Slap Conga (Factory-54).wav",
+      "original_midi": 38,
+      "fm1_midi": 37,
+      "rate": 32000,
+      "frames": 10508,
+      "sha256_original": "ec9980ed06a678aa33079da564ad6e0d5552776c64366f07bdd728d31fbf7628"
+    },
+    {
+      "slot": 3,
+      "name": "LOW",
+      "source_file": "R8 Low Conga (Factory-55).wav",
+      "original_midi": 39,
+      "fm1_midi": 41,
+      "rate": 32000,
+      "frames": 16881,
+      "sha256_original": "23f34dc41738091e85e243533f5844e0b78caac36bddbf4b72ee8cb220fbe846"
+    }
+  ],
+  "notes": [
+    {
+      "midi": 36,
+      "beat": 0.0,
+      "duration": 1.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 0.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 38,
+      "beat": 0.75,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 1.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 36,
+      "beat": 1.5,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 38,
+      "beat": 1.5,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 2.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 36,
+      "beat": 2.5,
+      "duration": 1.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 3.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 39,
+      "beat": 3.0,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 39,
+      "beat": 3.5,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 36,
+      "beat": 4.0,
+      "duration": 1.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 4.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 38,
+      "beat": 4.75,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 5.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 36,
+      "beat": 5.5,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 38,
+      "beat": 5.5,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 6.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 36,
+      "beat": 6.5,
+      "duration": 1.5,
+      "velocity": 100
+    },
+    {
+      "midi": 37,
+      "beat": 7.0,
+      "duration": 1.0,
+      "velocity": 100
+    },
+    {
+      "midi": 39,
+      "beat": 7.0,
+      "duration": 0.5,
+      "velocity": 100
+    },
+    {
+      "midi": 39,
+      "beat": 7.5,
+      "duration": 0.5,
+      "velocity": 100
+    }
+  ],
+  "excluded_notes_outside_loop": 2,
+  "source": "tamborzao-drum-rack.als",
+  "note_mapping": "MIDI 36,37,38,39 por ordem dos quatro pads; conferir a prévia auditiva"
+}

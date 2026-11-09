@@ -1,0 +1,315 @@
+{
+  "voltmix": {
+    "samples": [
+      {
+        "part": "KICK",
+        "receiving_note": 68,
+        "source": "Samples/Processed/Consolidate/voltloop (Drums) [2026-11-08 142011].wav",
+        "source_sha256": "32f833d9c5e897a57cb518ea1e8d2823e4a1440d70d345d4504bb7f53941c3ac",
+        "start": 0,
+        "end": 22104,
+        "gain_db": -12.0,
+        "frames": 14736
+      },
+      {
+        "part": "SNARE",
+        "receiving_note": 67,
+        "source": "Samples/Processed/Consolidate/voltloop (Snare) [2026-11-08 143337].wav",
+        "source_sha256": "7cf876c2093562087b923988b6fc515507586ef2d4de94e26ebb03edb344ebcc",
+        "start": 0,
+        "end": 38988,
+        "gain_db": -12.0,
+        "frames": 25992
+      },
+      {
+        "part": "HAT",
+        "receiving_note": 66,
+        "source": "Samples/Imported/TR-808 hh_cl.wav",
+        "source_sha256": "46bd269338a6552e2392358a833ddb4357777a3c49327b0bf85e8d7899f847cb",
+        "start": 0,
+        "end": 3304,
+        "gain_db": -21.7142849,
+        "frames": 2398
+      },
+      {
+        "part": "RIM",
+        "receiving_note": 65,
+        "source": "Samples/Processed/Consolidate/voltloop (Kick) [2026-11-08 143841].wav",
+        "source_sha256": "a81893cdd5b615fc6c00ee9e3701ba569112464c3de2c0017c5b7bd86145ab37",
+        "start": 0,
+        "end": 5538,
+        "gain_db": -12.0,
+        "frames": 3692
+      }
+    ],
+    "notes": [
+      {
+        "midi": 60,
+        "beat": 0.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 60,
+        "beat": 0.75,
+        "velocity": 100.0
+      },
+      {
+        "midi": 60,
+        "beat": 1.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 60,
+        "beat": 2.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 1.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 3.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 0.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 0.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 1.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 1.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 2.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 2.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 3.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 3.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 0.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 0.25,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 0.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 3.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 3.75,
+        "velocity": 100.0
+      }
+    ],
+    "loop_beats": 4.0,
+    "bank_bytes": 34484,
+    "bank_sha256": "b49cfcfd361d36aba03d9a69e666ed8d1c5a6ea45ac575558d7e385ca7e0ef4a"
+  },
+  "bolha": {
+    "samples": [
+      {
+        "part": "KICK",
+        "receiving_note": 68,
+        "source": "Samples/Processed/Consolidate/BEAT BOLHA ORIGINAL  [2026-11-08 144938].wav",
+        "source_sha256": "0a1dea667c9181b238585b51249ee318869f12cad57192a6628720ed8c27ea40",
+        "start": 0,
+        "end": 13846,
+        "gain_db": -12.0,
+        "frames": 9231
+      },
+      {
+        "part": "SNARE",
+        "receiving_note": 67,
+        "source": "Samples/Processed/Consolidate/BEAT BOLHA ORIGINAL  [2026-11-08 145013].wav",
+        "source_sha256": "020fbe2aeb2525793fa0696fb4dcd79917c99d439ad47175039c08c3cbc13b9c",
+        "start": 0,
+        "end": 13846,
+        "gain_db": -12.0,
+        "frames": 9231
+      },
+      {
+        "part": "HAT",
+        "receiving_note": 66,
+        "source": "Samples/Imported/bolha brilhante.wav",
+        "source_sha256": "b596df59646de34adce77a0c27130886efcea4cc5b0c42385c407483dd5e8fde",
+        "start": 0,
+        "end": 13715,
+        "gain_db": -12.0,
+        "frames": 9144
+      },
+      {
+        "part": "RIM",
+        "receiving_note": 65,
+        "source": "Samples/Processed/Consolidate/bolha-ritmada-d [2026-11-08 145808].wav",
+        "source_sha256": "c49f626047dad9f17a878cd7bfcc8ff69a5c32a9ebaa789d54f99777551a4207",
+        "start": 0,
+        "end": 8044,
+        "gain_db": -12.0,
+        "frames": 5363
+      }
+    ],
+    "notes": [
+      {
+        "midi": 60,
+        "beat": 0.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 60,
+        "beat": 2.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 60,
+        "beat": 3.625,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 0.75,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 1.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 2.5,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 3.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 61,
+        "beat": 3.308339316933067,
+        "velocity": 100.0
+      },
+      {
+        "midi": 62,
+        "beat": 0.0,
+        "velocity": 119.606026
+      },
+      {
+        "midi": 62,
+        "beat": 0.37537540584415585,
+        "velocity": 56.23423
+      },
+      {
+        "midi": 62,
+        "beat": 0.6805816579254079,
+        "velocity": 127.0
+      },
+      {
+        "midi": 62,
+        "beat": 1.0549013486513485,
+        "velocity": 48.6666031
+      },
+      {
+        "midi": 62,
+        "beat": 1.4298748126873126,
+        "velocity": 96.3237076
+      },
+      {
+        "midi": 62,
+        "beat": 1.6805941454378954,
+        "velocity": 54.5327644
+      },
+      {
+        "midi": 62,
+        "beat": 2.05561781968032,
+        "velocity": 52.6904259
+      },
+      {
+        "midi": 62,
+        "beat": 2.4298873001998,
+        "velocity": 71.9271851
+      },
+      {
+        "midi": 62,
+        "beat": 2.6799029095904094,
+        "velocity": 44.451561
+      },
+      {
+        "midi": 62,
+        "beat": 3.0000377226939725,
+        "velocity": 87.5556793
+      },
+      {
+        "midi": 62,
+        "beat": 3.3055957063769563,
+        "velocity": 50.7462082
+      },
+      {
+        "midi": 62,
+        "beat": 3.6806193806193805,
+        "velocity": 48.7057724
+      },
+      {
+        "midi": 63,
+        "beat": 0.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 1.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 2.0,
+        "velocity": 100.0
+      },
+      {
+        "midi": 63,
+        "beat": 3.0,
+        "velocity": 100.0
+      }
+    ],
+    "loop_beats": 4.0,
+    "bank_bytes": 24224,
+    "bank_sha256": "15b6b13aca4d63401ae0c0172df87fafdc7a6125ed67befafd260ce6cdac4390"
+  }
+}

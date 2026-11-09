@@ -1,7 +1,10 @@
 {
   "passed": true,
+  "app_bytes": 551528,
+  "app_limit": 584993,
+  "user_bytes": 405504,
   "entry": "0x2000120",
-  "runtime_heap_bytes": 234380,
+  "runtime_heap_bytes": 239244,
   "acl_pools": {
     "tx": 1024,
     "rx": 4096
@@ -21,24 +24,24 @@
     "audio_decoder",
     "audio_hwaccel"
   ],
-  "audio_and_panel_sram_symbols_checked": 142,
+  "audio_and_panel_sram_symbols_checked": 143,
   "sections": [
     {
       "name": ".text",
       "address": 33554720,
-      "bytes": 419264,
+      "bytes": 471104,
       "nobits": false
     },
     {
       "name": ".ram0_data",
       "address": 29360128,
-      "bytes": 80744,
+      "bytes": 80392,
       "nobits": false
     },
     {
       "name": ".ram0_bss",
-      "address": 29440872,
-      "bytes": 208416,
+      "address": 29440520,
+      "bytes": 203904,
       "nobits": true
     },
     {

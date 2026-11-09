@@ -1,0 +1,32 @@
+{
+  "upstream": "https://github.com/m-vave/fm1_open",
+  "commit": "4c7496daac04a95ff10d1afdcc8f9ead2dbabc41",
+  "clean_host_boot": "passed",
+  "native_official_compiler": "pending: Windows JieLi 2.5.3",
+  "assets": {
+    "assets/art/boot-reference.png": "f32bd948b5f75cf36ba9a9fa9f5d9644df7c8e223df2b8cd7d8352bf559b9d04",
+    "assets/art/bolha-title.png": "cb2fe54c1ac0bf00559041486986ae0b79736d10a60d81e03aada3bba008a17d",
+    "assets/art/voltmix-title.png": "dbc73b286abfe47308da5fbf6e514d35755300c97d619965f9aac55426b660a6",
+    "assets/art/tamborzao-reference.png": "97574889292cf31d4da37430b370c3c7c88b87cd09231109c85e9c7e557bf729",
+    "assets/art/voltmix-reference.png": "eece98164e4b58cf84c735a2ea5a96077690681423c52350e9f29776d142658b",
+    "assets/art/bolha-reference.png": "af2eba7738a24b4d551a42f9f42670433f36ce29c36621901587bc271f69a979",
+    "assets/art/tamborzao-title.png": "e9a6e15129ad55ad7623daccdcec0521e384d0086f580890281d88358795159a",
+    "assets/audio/tamborzao.json": "61cd0ef10137a313c1a66756927b3ce0e354074f13dee700c14ae5d49828c867",
+    "assets/audio/bolha-2.wav": "1fe3703ac16b0f9d2c4545ba646fd6db5037b871138c0e141b0730127a892d72",
+    "assets/audio/bolha-3.wav": "b25b03004f6c219f82c2acd3e80f0c793038279fac719b9b5b48c728b8b5622c",
+    "assets/audio/bolha-1.wav": "a34e24c9e4dfa3a72854558556a233c067f4e10680e5caa2b813c3428d60f222",
+    "assets/audio/bolha-4.wav": "bbf7fe1de16c378a80d57f2f4127d7064678aad7c260c5e0e280d9a06d2d64cb",
+    "assets/audio/tamborzao-01-KICK.wav": "29e5e0fe2f92e464563ed3f3455440f5cc71de6f89f317a6704be0500e76e26e",
+    "assets/audio/tamborzao-02-ATAK.wav": "6bac7abc5555d836e5d045e50bf16f444335491a4474e7d3bd770de03be4de26",
+    "assets/audio/voltmix-4.wav": "3952e0baecc8323ab44c8771334cc7c143aa873e7976e560e5c7770eb6b4b877",
+    "assets/audio/tamborzao-03-SLAP.wav": "93c2b0a12a8a2115ff768276c5df4998fbab5d2ab91614090c19ce3b651bbbeb",
+    "assets/audio/bolha.fm1s": "15b6b13aca4d63401ae0c0172df87fafdc7a6125ed67befafd260ce6cdac4390",
+    "assets/audio/voltmix-1.wav": "754a9b39e2122d9267fb45d6c12e94e5d292c3fd542896152cfe8aa52287d80d",
+    "assets/audio/voltmix-2.wav": "f741e289791ac6ccd17d72b712d90d671b793baaf7b36b6c90e4a86ca5515d76",
+    "assets/audio/tamborzao.fm1s": "ad3faba4ed5240959843d94e01a1b6e6ff2d9ec089e29453335524823c5dec31",
+    "assets/audio/voltmix-3.wav": "9913741d441c87bf11b1719731bbc9668c954b6b7a60ae960d0ddc7ee91d4fba",
+    "assets/audio/racks.json": "c09f9fb01796e007f7c202b18863f50a0ac061c6bd6def77b41b6941be5385ce",
+    "assets/audio/tamborzao-04-LOW.wav": "058c4a096f133b42e85bcf82e680bc838e7a83504e0ec6eeca85487d12d1190f",
+    "assets/audio/voltmix.fm1s": "b49cfcfd361d36aba03d9a69e666ed8d1c5a6ea45ac575558d7e385ca7e0ef4a"
+  }
+}

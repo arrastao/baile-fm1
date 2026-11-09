@@ -324,7 +324,7 @@ unsigned groove_lock_parameter_count(unsigned track);
 const char *groove_lock_parameter_name(unsigned track, unsigned parameter);
 struct groove_project *groove_project_scratch(void); /* control-only, transient */
 /* Project sectors stay at 0..68 KiB; a single shared 456 KiB sample bank follows. */
-enum { GROOVE_SAMPLE_OFFSET = 69632, GROOVE_SAMPLE_BYTES = 335872,
+enum { GROOVE_SAMPLE_OFFSET = 69632, GROOVE_SAMPLE_BYTES = 335872 /* BAILE: 396 KiB user partition, embedded banks */,
        GROOVE_FLASH_BYTES = GROOVE_SAMPLE_OFFSET + GROOVE_SAMPLE_BYTES };
 /* Five final sectors hold the four DX7 banks and tuning/session preferences.
  * New sample transfers stop before them. Larger legacy banks stay readable;

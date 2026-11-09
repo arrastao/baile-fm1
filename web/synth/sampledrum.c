@@ -16,10 +16,10 @@ static struct sample_asset sample_assets[SAMPLE_DRUM_PADS];
 static char sample_short_names[SAMPLE_DRUM_PADS][6];
 #include "sample_metadata.inc"
 #include "sea_encode.h"
-extern const uint8_t *baile_factory_bank(unsigned *bytes);
+#include "demo_bank.h"
 const uint8_t *sampledrum_factory(unsigned *bytes)
 {
-    return baile_factory_bank(bytes);
+    return demo_bank(bytes);
 }
 uint8_t *sampledrum_encode(const int16_t *pcm, unsigned frames, unsigned *bytes)
 {
