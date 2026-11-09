@@ -4,6 +4,8 @@ Instrumento de ritmos para o M-VAVE FM-1 com **Tamborzão, Voltmix e Beat Bolha*
 
 Na versão 0.7, os 12 samples recebem ajuste de ganho para aproximar o volume dos ataques, com margem nos picos. Os WAVs originais são preservados. [Detalhes](docs/AUDIO.md).
 
+[Testar no navegador](https://arrastao.github.io/baile-fm1/) · [Baixar firmware estável](https://github.com/arrastao/baile-fm1/releases/download/v0.7.0/BAILE-0.7-FM1.fwsc)
+
 ## Uso
 
 A arte de abertura do BAILE permanece completa por 3 segundos. Em seguida aparece o Tamborzão e os controles ficam ativos. PLAY inicia ou para o beat. PRESETS troca de kit; ALGORITHM seleciona uma das quatro trilhas; as 16 teclas brancas alternam os passos dessa trilha. Cada preset tem um único compasso de 16 passos; OCT −/+ fica sem função. K1 controla saturação, K2 reverb, K3 BPM e K4 swing.

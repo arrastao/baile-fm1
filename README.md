@@ -9,7 +9,7 @@ This is a reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinn
 
 **Status: stable (0.7).** Promoted after the user reported successful operation on their FM-1. The firmware bytes are unchanged from the tested build. Container integrity, original boot, embedded banks and native emulator playback were also verified. See [STATUS](STATUS.md).
 
-[Download BAILE 0.7 firmware](firmware/BAILE-0.7-FM1.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
+[Try BAILE in your browser](https://arrastao.github.io/baile-fm1/) · [Download BAILE 0.7 firmware](firmware/BAILE-0.7-FM1.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
 
 [Português](README.pt-BR.md) · [Build](docs/BUILDING.md) · [Architecture](docs/ARCHITECTURE.md) · [Asset rights](assets/README.md)
 
