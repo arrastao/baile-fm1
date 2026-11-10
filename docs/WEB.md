@@ -21,9 +21,9 @@ Drag knobs up/right to increase, down/left to decrease. Tapping either half chan
 
 ## Phone layout
 
-Portrait shows a rotation prompt. Landscape fills the available viewport, respects safe-area insets and hides the site header, download link and footer. Device proportions adapt to wide screens while the LCD remains square and knobs remain round.
+Portrait shows a rotation prompt, a firmware download link and an **Abrir em tela cheia** button. Landscape fills the available viewport, respects safe-area insets and hides the site header, download link and footer. Device proportions adapt to wide screens while the LCD remains square and knobs remain round.
 
-The first control gesture requests fullscreen when the browser supports it and activates audio. Rotation alone is not a user activation and cannot guarantee fullscreen. Browsers that reject the request continue using the full available webpage area. Phone/browser system bars cannot be forcibly hidden. No extra fullscreen button is added.
+The portrait button requests fullscreen from the click gesture, then attempts to lock landscape orientation when supported. If fullscreen or orientation locking is unavailable, the rotation prompt remains usable and explains the next step. Exiting fullscreen releases an orientation lock acquired by the page. The first instrument control gesture also requests fullscreen when supported and activates audio. Rotation alone is not a user activation and cannot guarantee fullscreen. Browsers that reject the request continue using the full available webpage area. Phone/browser system bars cannot be forcibly hidden. No extra button appears over the landscape instrument panel.
 
 ## Engine and verification
 

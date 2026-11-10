@@ -34,6 +34,25 @@ function fullscreen(){
  if(!document.fullscreenElement&&document.documentElement.requestFullscreen)
    document.documentElement.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
 }
+let orientationLocked=false;
+$('open-fullscreen').addEventListener('click',async()=>{
+ const button=$('open-fullscreen'),hint=$('rotate-hint');
+ button.disabled=true;button.textContent='Abrindo…';
+ try{
+  if(!document.fullscreenElement){
+   if(!document.documentElement.requestFullscreen)throw Error('Fullscreen unavailable');
+   await document.documentElement.requestFullscreen({navigationUI:'hide'});
+  }
+  if(screen.orientation?.lock){
+   try{await screen.orientation.lock('landscape');orientationLocked=true;}catch{}
+  }
+  hint.textContent='Tela cheia ativada. Vire o telefone para usar.';
+ }catch{
+  hint.textContent='Tela cheia indisponível. Vire o telefone para usar.';
+ }finally{
+  button.disabled=false;button.textContent='Abrir em tela cheia';mode();
+ }
+});
 function announce(text){$('announcer').textContent=text;}
 function failure(text){$('boot-status').hidden=false;$('boot-status').textContent=text;}
 function command(kind,index,value){
@@ -157,7 +176,13 @@ async function enableAudio(){
 window.addEventListener('blur',releaseAll);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseAll();});
 window.addEventListener('resize',mode);window.visualViewport?.addEventListener('resize',mode);
-document.addEventListener('fullscreenchange',mode);
+document.addEventListener('fullscreenchange',()=>{
+ if(!document.fullscreenElement&&orientationLocked){
+  try{screen.orientation.unlock();}catch{}
+  orientationLocked=false;
+ }
+ mode();
+});
 mode();
 (async()=>{
  try{const r=await fetch('baile.wasm');if(!r.ok)throw Error(r.status);wasm=await r.arrayBuffer();core=new WebAssembly.Instance(new WebAssembly.Module(wasm),{}).exports;core._initialize();core.sim_boot(3);ready=true;device.setAttribute('aria-busy','false');$('boot-status').hidden=true;startTimer();}
