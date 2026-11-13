@@ -24,6 +24,8 @@ Drag knobs up/right to increase, down/left to decrease. Tapping either half chan
 
 One device, two layouts. On a phone the device fills the screen and its controls glide (about half a second) between the **landscape** layout (the FM-1 as it looks on the desk) and the **portrait** layout (knobs and LCD on top, button grid, then the keyboard). There is no rotate-your-phone screen. In portrait a slim top bar keeps the **Baixar firmware** button; the keyboard shows eight steps at a time, and the strip above it shows the 16 steps (lit = active) and lets you tap the half you want (1–8 or 9–16). Landscape hides the top bar and shows all 16 keys. Reduced-motion settings turn the animation off.
 
+**iPhone:** Safari does not allow the Fullscreen API for pages, so the address bar cannot be hidden from a normal tab. Use Share → **Adicionar à Tela de Início**: the page opens as an app (manifest + `apple-mobile-web-app-capable`) without Safari's bars, in portrait or landscape. If the browser pauses the sound, the page asks for a tap to resume it.
+
 On a computer (mouse and hover) the simulator always uses the landscape layout inside the rounded FM-1 body, whatever the window size. The first control gesture in landscape also requests fullscreen where the browser allows it.
 
 ## Engine and verification

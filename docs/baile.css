@@ -88,3 +88,7 @@ html.instrument-mode,html.instrument-mode body{background:var(--orange)}
 /* Portrait download button: a rounded tray-coloured rectangle, like the OCT tray. */
 .portrait-mode .site-header{padding:env(safe-area-inset-top) max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));align-items:center}
 .portrait-mode .site-header .download{flex:1;align-self:center;height:40px;border-radius:calc(2.2cqw + 8px);background:var(--tray);color:var(--cream);box-shadow:none}
+
+/* Legends sit above their knob with a clear gap, whatever the knob size. */
+.knob-label{top:auto;bottom:calc(50% + var(--ksz)/2 + .6em)}
+.knob-value{bottom:auto;top:calc(50% + var(--ksz)/2 + .4em)}

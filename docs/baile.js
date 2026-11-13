@@ -72,10 +72,14 @@ function releaseAll(){
 let userGesture=false,silent=null;
 function keepAlive(){
  try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch{}
- if(silent)return;
+ if(silent||navigator.audioSession)return; // older iOS: a silent looping <audio> switches the session to playback
  try{silent=new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');silent.loop=true;silent.setAttribute('playsinline','');silent.play().catch(()=>{});}catch{}
 }
 function activate(){fullscreen();if(userGesture)enableAudio().catch(()=>failure('Toque novamente para ativar o áudio.'));}
+function soundHint(){
+ if(!audio||!engine)return;
+ if(audio.state==='running')$('boot-status').hidden=true;else failure('Toque na tela para ativar o som');
+}
 function unlock(){
  userGesture=true;keepAlive();
  if(audio&&audio.state!=='running')audio.resume().catch(()=>{});
@@ -182,6 +186,7 @@ async function enableAudio(){
    engine.onprocessorerror=()=>failure('O áudio parou. Recarregue a página.');
    engine.connect(audio.destination);for(const m of queue)engine.port.postMessage(m);queue=[];
    $('boot-status').hidden=true;
+   audio.onstatechange=soundHint;if(audio.state!=='running'){audio.resume().catch(()=>{});soundHint();}
   }catch(e){
    if(audio)await audio.close();audio=null;engine=null;
    for(const m of queue){if(m.release)core.sim_release();else core.sim_control(m.kind,m.index,m.value);}queue=[];startTimer();throw e;
@@ -189,7 +194,7 @@ async function enableAudio(){
  })();return starting;
 }
 window.addEventListener('blur',releaseAll);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseAll();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseAll();else if(audio&&audio.state!=='running')audio.resume().catch(()=>{});});
 window.addEventListener('resize',mode);window.visualViewport?.addEventListener('resize',mode);
 document.addEventListener('fullscreenchange',()=>{
  if(!document.fullscreenElement&&orientationLocked){

@@ -1,0 +1,27 @@
+{
+ "name": "BAILE by MULÚ",
+ "short_name": "BAILE",
+ "description": "BAILE para FM-1 no navegador.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "fullscreen",
+ "display_override": [
+  "fullscreen",
+  "standalone"
+ ],
+ "orientation": "any",
+ "background_color": "#ef7a3c",
+ "theme_color": "#ef7a3c",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
