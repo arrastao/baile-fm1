@@ -8,12 +8,12 @@ const white=[0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26];
 const black=[[1,0],[3,1],[5,2],[8,4],[10,5],[13,7],[15,8],[17,9],[20,11],[22,12],[25,14]];
 const knobSpecs=[
  {name:'MASTER',hint:'Volume',x:7.2,y:15,kind:3,index:0,min:0,max:1023,value:1023},
- {name:'SELECT',hint:'Sem função no BAILE 0.7',x:18.1,y:15,kind:2,index:0,min:0,max:127,value:0},
+ {name:'SELECT',hint:'Volume da trilha',x:18.1,y:15,kind:2,index:0,min:0,max:127,value:0},
  {name:'PRESETS',hint:'Kit',x:7.2,y:33,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
  {name:'ALGORITHM',hint:'Trilha',x:18.1,y:33,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
- ...['Saturação','Reverb','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,kind:2,index:i+2,min:i===2?30:0,max:[100,15,300,50][i],value:i===2?130:0,state:i+4}))
+ ...['Saturação','Delay','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,kind:2,index:i+2,min:i===2?30:0,max:[100,100,300,50][i],value:i===2?130:0,state:i+4}))
 ];
-let core,wasm,engine,audio,starting,timer,transferring=false,ready=false,queue=[],state=new Uint32Array(15);
+let core,wasm,engine,audio,starting,timer,transferring=false,ready=false,queue=[],state=new Uint32Array(16);
 const pointers=new Map(),held=new Map(),matrix=new Map();
 const ctx=$('lcd').getContext('2d'),bitmap=ctx.createImageData(240,240);
 function position(el,x,y,w,h){Object.assign(el.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});}
@@ -92,7 +92,7 @@ function knobView(k){
  let text=k.value;
  if(k.kind===3)text=Math.round(k.value/1023*100)+'%';
  else if(k.index===6)text=kits[k.value];else if(k.index===1)text=names[state[0]||0][k.value];
- else if(k.index===0)text='Sem função nesta versão';
+ else if(k.index===0)text='Vol '+(state[15]||0);
  k.el.setAttribute('aria-valuetext',String(text));k.output.textContent=text;
 }
 function turn(k,delta){
@@ -129,13 +129,13 @@ for(const k of knobSpecs){
 const labels=['OCT−','OCT+','FX','SCL','ENV','LFO','EDIT','GLO','HOME','SAVE','ARP','SEQ','PLAY / STOP','REC'];
 for(let i=0;i<14;i++){
  const el=document.createElement('button');el.type='button';el.className='panel-button'+(i===12?' play-button':'');el.textContent=labels[i];el.id='button-'+i;
- el.setAttribute('aria-label',labels[i]+(i===12?' · iniciar ou parar':i<2?' · um compasso': ' · sem função no BAILE 0.7'));
+ el.setAttribute('aria-label',labels[i]+(i===12?' · iniciar ou parar':i<2?' · um compasso': ' · sem função no BAILE 0.8'));
  if(i<2)position(el,4.1+i*8.5,43.3,7.7,5.4);else position(el,54.7+(i-2)%6*6.75,28.6+Math.floor((i-2)/6)*10.9,5.8,8.8);
  bindButton(el,0,i);matrix.set(i,el);$('buttons').append(el);
 }
 function note(n,x,y,h,caption){
  const el=document.createElement('button');el.type='button';el.className='note-key';el.id='key-'+n;position(el,x,y,5.8,h);
- const step=white.indexOf(n);el.setAttribute('aria-label',step<0?'Tecla '+n+' · sem função no BAILE 0.7':'Passo '+(step+1));
+ const step=white.indexOf(n);el.setAttribute('aria-label',step<0?'Tecla '+n+' · sem função no BAILE 0.8':'Passo '+(step+1));
  el.innerHTML='<span class="key-cap"></span><span class="key-caption">'+caption+'</span>';bindButton(el,1,n);matrix.set(n+14,el);$('keys').append(el);
 }
 white.forEach((n,i)=>note(n,2.8+i*5.86,79.2,16.2,String(i+1)));
@@ -152,7 +152,7 @@ function paint(pixels,s,leds){
  $('lcd').setAttribute('aria-label',kits[s[0]]+' · '+names[s[0]][s[2]]+' · '+s[6]+' BPM · '+(s[13]?'tocando':'parado'));
  if(s[8])failure('Não foi possível carregar o kit. Recarregue a página.');
 }
-function read(c){paint(new Uint16Array(c.memory.buffer,c.sim_pixels(),57600),new Uint32Array(c.memory.buffer,c.baile_inspect(),15).slice(),new Uint8Array(c.memory.buffer,c.sim_state()+168,41));}
+function read(c){paint(new Uint16Array(c.memory.buffer,c.sim_pixels(),57600),new Uint32Array(c.memory.buffer,c.baile_inspect(),16).slice(),new Uint8Array(c.memory.buffer,c.sim_state()+168,41));}
 function startTimer(){clearInterval(timer);timer=setInterval(()=>{for(let i=0;i<10;i++)core.sim_render();read(core);},29);}
 async function enableAudio(){
  if(!ready)return;
@@ -161,7 +161,7 @@ async function enableAudio(){
  transferring=true;clearInterval(timer);
  starting=(async()=>{
   try{
-   audio=new AudioContext({sampleRate:44100});await audio.resume();await audio.audioWorklet.addModule('baile-worklet.js?v=2');
+   audio=new AudioContext({sampleRate:44100});await audio.resume();await audio.audioWorklet.addModule('baile-worklet.js?v=3');
    engine=new AudioWorkletNode(audio,'baile',{numberOfInputs:0,numberOfOutputs:1,outputChannelCount:[2],processorOptions:{wasm,memory:core.memory.buffer.slice(0)}});
    engine.port.onmessage=({data:m})=>paint(m.pixels,m.state,m.leds);
    engine.onprocessorerror=()=>failure('O áudio parou. Recarregue a página.');
@@ -185,6 +185,6 @@ document.addEventListener('fullscreenchange',()=>{
 });
 mode();
 (async()=>{
- try{const r=await fetch('baile.wasm');if(!r.ok)throw Error(r.status);wasm=await r.arrayBuffer();core=new WebAssembly.Instance(new WebAssembly.Module(wasm),{}).exports;core._initialize();core.sim_boot(3);ready=true;device.setAttribute('aria-busy','false');$('boot-status').hidden=true;startTimer();}
+ try{const r=await fetch('baile.wasm?v=0.8');if(!r.ok)throw Error(r.status);wasm=await r.arrayBuffer();core=new WebAssembly.Instance(new WebAssembly.Module(wasm),{}).exports;core._initialize();core.sim_boot(3);ready=true;device.setAttribute('aria-busy','false');$('boot-status').hidden=true;startTimer();}
  catch(e){failure('Não foi possível carregar o BAILE. Recarregue a página.');}
 })();

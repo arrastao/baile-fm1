@@ -25,7 +25,7 @@ class BaileProcessor extends AudioWorkletProcessor {
     if((this.tick+=out[0].length)>=sampleRate/30){
       this.tick=0;
       const pixels=new Uint16Array(c.memory.buffer,c.sim_pixels(),57600).slice();
-      const state=new Uint32Array(c.memory.buffer,c.baile_inspect(),15).slice();
+      const state=new Uint32Array(c.memory.buffer,c.baile_inspect(),16).slice();
       const leds=new Uint8Array(c.memory.buffer,c.sim_state()+168,41).slice();
       this.port.postMessage({pixels,state,leds},[pixels.buffer,state.buffer,leds.buffer]);
     }

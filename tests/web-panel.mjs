@@ -7,13 +7,16 @@ import assert from 'node:assert/strict';
 const wasm=fs.readFileSync('docs/baile.wasm');
 const c=new WebAssembly.Instance(new WebAssembly.Module(wasm),{}).exports;
 c._initialize(); c.sim_boot(3);
-const state=()=>new Uint32Array(c.memory.buffer,c.baile_inspect(),15).slice();
+const state=()=>new Uint32Array(c.memory.buffer,c.baile_inspect(),16).slice();
 const leds=()=>new Uint8Array(c.memory.buffer,c.sim_state()+168,41).slice();
 const render=seconds=>{for(let i=0;i<Math.ceil(seconds*44100/128);i++)c.sim_render();};
 const tap=(kind,index)=>{c.sim_control(kind,index,1);c.sim_control(kind,index,0);render(.03);};
 const whites=[0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26];
 render(2.5);c.sim_control(2,6,1);assert.equal(state()[0],0,'splash must ignore controls');
 render(1);assert.equal(state()[8],0,'sample banks loaded');
+render(.2);assert.equal(state()[13],1,'sequencer autoplays after the splash');
+assert.equal(state()[5],0,'delay starts at 0%');
+tap(0,12);assert.equal(state()[13],0,'PLAY stops the autoplay');render(.1);
 for(let kit=0;kit<3;kit++){
   assert.equal(state()[0],kit);
   for(let part=0;part<4;part++){
@@ -30,7 +33,9 @@ for(let kit=0;kit<3;kit++){
   c.sim_control(2,6,1);render(.03);
 }
 assert.equal(state()[0],0,'preset wraps to Tamborzao');
-for(const [encoder,slot,min,max] of [[2,4,0,100],[3,5,0,15],[4,6,30,300],[5,7,0,50]]){
+// SELECT sets the selected part's level in steps of 4.
+const level=state()[15];c.sim_control(2,0,-1);render(.05);assert.equal(state()[15],level-4,'SELECT lowers the part level');c.sim_control(2,0,1);render(.05);assert.equal(state()[15],level);
+for(const [encoder,slot,min,max] of [[2,4,0,100],[3,5,0,100],[4,6,30,300],[5,7,0,50]]){
   for(let i=0;i<3;i++)c.sim_control(2,encoder,127);
   assert.equal(state()[slot],max);
   for(let i=0;i<3;i++)c.sim_control(2,encoder,-127);

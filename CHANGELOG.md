@@ -19,8 +19,10 @@ Hardware: the user reported that this build works on their physical FM-1. Firmwa
 - Native build on macOS (JieLi Linux + Blink): application 553096 of 584993 bytes (0.7: 551528); runtime heap 205516 bytes (0.7: 239244, minimum 49152); 144 audio/panel SRAM symbols checked, including `baile_delay`; SDK hashes, layout and package verification passed.
 - Native FM-1 emulator: boot, autoplay, VOL 100→80, DLY 0→50→100, tail after STOP, kit change, finite audio.
 
+### Website
+- The GitHub Pages simulator now runs the 0.8 engine (autoplay, delay, SELECT level), labels K2 as Delay, shows SELECT's level, and its download links to `firmware/BAILE-0.8-FM1.fwsc`. `tests/web-panel.mjs` passes.
+
 ### Known limits
-- The browser simulator published at GitHub Pages still runs the 0.7 engine; it is rebuilt separately.
 - Delay amount is global; per-part delay is not possible without separating the parts inside the engine.
 - Edits still last for the current session only; kit switching is not sample-accurate (unchanged from 0.7).
 
