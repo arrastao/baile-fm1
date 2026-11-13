@@ -9,8 +9,8 @@ const black=[[1,0],[3,1],[5,2],[8,4],[10,5],[13,7],[15,8],[17,9],[20,11],[22,12]
 const knobSpecs=[
  {name:'MASTER',hint:'Volume',x:7.2,y:15,px:13.5,py:10.5,kind:3,index:0,min:0,max:1023,value:1023},
  {name:'SELECT',hint:'Volume da trilha',x:18.1,y:15,px:32.5,py:10.5,kind:2,index:0,min:0,max:127,value:0},
- {name:'PRESETS',hint:'Kit',x:7.2,y:33,px:13.5,py:22,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
- {name:'ALGORITHM',hint:'Trilha',x:18.1,y:33,px:32.5,py:22,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
+ {name:'PRESETS',hint:'Kit',detent:40,x:7.2,y:33,px:13.5,py:22,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
+ {name:'ALGORITHM',hint:'Trilha',detent:28,x:18.1,y:33,px:32.5,py:22,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
  ...['Saturação','Delay','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,px:19.9+i*22.33,py:41,kind:2,index:i+2,min:i===2?30:0,max:[100,100,300,50][i],value:i===2?130:0,state:i+4}))
 ];
 let core,wasm,engine,audio,starting,timer,transferring=false,ready=false,queue=[],state=new Uint32Array(16);
@@ -123,7 +123,7 @@ for(const k of knobSpecs){
   const dx=e.clientX-p.x,dy=p.y-e.clientY;p.x=e.clientX;p.y=e.clientY;
   if(Math.hypot(e.clientX-p.startX,e.clientY-p.startY)>3)p.moved=true;
   p.acc+=Math.abs(dy)>=Math.abs(dx)?dy:dx;
-  const detent=5,delta=Math.trunc(p.acc/detent);if(delta){p.acc-=delta*detent;turn(k,delta);}
+  const detent=k.detent||5,delta=Math.trunc(p.acc/detent);if(delta){p.acc-=delta*detent;turn(k,delta);}
  });
  const finish=e=>{const p=pointers.get(e.pointerId);if(!p?.k)return;
   if(e.type==='pointerup'&&!p.moved){const r=el.getBoundingClientRect();turn(k,e.clientX<r.left+r.width/2?-1:1);}

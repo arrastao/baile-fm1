@@ -18,7 +18,7 @@ html.instrument-mode,html.instrument-mode body{width:100%;height:100%;overflow:h
 .minimap i{position:absolute;top:18%;bottom:18%;width:5.2%;border-radius:3px;background:#a85a46;box-shadow:inset 0 -2px #84402e;transition:background .12s}
 .minimap i.on{background:#ffbe55;box-shadow:0 0 6px #ffd173}
 .minimap b{position:absolute;top:0;bottom:0;left:calc(var(--half)*50%);width:50%;border:calc(var(--u)*.3) solid #fff1dc;border-radius:calc(var(--u)*.9);transition:left .35s cubic-bezier(.4,0,.2,1)}
-.portrait-mode .device{--u:2.3cqw;--bx:calc(95.9% - var(--bw)/2);--bt:6.9%;--bw:min(51.7cqw,24cqh);--ksz:min(11.6cqw,7cqh)}
+.portrait-mode .device{--u:2.3cqw;--bx:calc(95.9% - var(--bw)/2);--bt:2.5%;--bw:min(50cqw,32cqh);--ksz:min(11.6cqw,7cqh)}
 .portrait-mode .minimap{opacity:1;pointer-events:auto}
 .portrait-mode .screw,.portrait-mode .silkscreen{opacity:0}
 .portrait-mode #keys{clip-path:inset(63% 6.2% 3.4% 6.2%)}
@@ -84,3 +84,7 @@ html.instrument-mode,html.instrument-mode body{background:var(--orange)}
 .portrait-mode .site-header{padding:env(safe-area-inset-top) 0 0;height:calc(54px + env(safe-area-inset-top));background:var(--orange)}
 .portrait-mode .site-header h1,.portrait-mode .site-header>span{display:none}
 .portrait-mode .site-header .download{flex:1;align-self:stretch;display:flex;align-items:center;justify-content:center;margin:0;border-radius:0;font-size:13px;letter-spacing:.14em;background:#bf5f2d;color:#fff4e8}
+
+/* Portrait download button: a rounded tray-coloured rectangle, like the OCT tray. */
+.portrait-mode .site-header{padding:env(safe-area-inset-top) max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));align-items:center}
+.portrait-mode .site-header .download{flex:1;align-self:center;height:40px;border-radius:calc(2.2cqw + 8px);background:var(--tray);color:var(--cream);box-shadow:none}
