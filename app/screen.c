@@ -9,8 +9,8 @@
 static const uint8_t white[16] = {0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26};
 static uint16_t pixels[FM1_SCREEN_WIDTH*16];
 static uint32_t hashes[15], old_keys, old_buttons, started, frame_at;
-static unsigned band, top, splash, dirty, frame_active, initialized;
-static struct { unsigned kit, selected, page, sat, rev, swing, pending, error, splash;
+static unsigned band, top, splash, dirty, frame_active, initialized, autostart;
+static struct { unsigned kit, selected, page, sat, rev, swing, pending, error, splash, vol;
     struct groove_view transport; uint32_t steps[4]; } frame;
 static void fill(unsigned x,unsigned y,unsigned w,unsigned h,uint16_t color) {
     if(x>=240 || y>=240)return;
@@ -73,7 +73,8 @@ static void draw_band(void) {
     number_label(s,"",frame.transport.tempo," BPM");text(191,161,s,0);
     fill(6,179,70,19,0);fill(83,179,70,19,0);
     number_label(s,"SAT ",frame.sat,"");text(12,185,s,0x07ff);
-    number_label(s,"REV ",frame.rev,"");text(89,185,s,0x07ff);
+    number_label(s,"DLY ",frame.rev,"");text(89,185,s,0x07ff);
+    number_label(s,"VOL ",frame.vol,"");text(112,206,s,0);
     number_label(s,"SWING ",frame.swing,"");text(6,206,s,0);
     if(frame.error){text(6,226,"ERRO AO CARREGAR KIT",0);return;}
     if(frame.pending){strcpy(s,"PROX > ");strcat(s,baile_name(frame.pending-1));text(6,226,s,0);return;}
@@ -83,7 +84,7 @@ static void draw_band(void) {
 static void snapshot(void) {
     frame.kit=baile_state(0);frame.pending=baile_state(1);frame.selected=baile_state(2);
     frame.page=baile_state(3);frame.sat=baile_state(4);frame.rev=baile_state(5);
-    frame.swing=baile_state(7);frame.error=baile_state(8);frame.splash=splash;
+    frame.vol=baile_state(9);frame.swing=baile_state(7);frame.error=baile_state(8);frame.splash=splash;
     groove_get_view(0,0,&frame.transport);
     for(unsigned p=0;p<4;++p)frame.steps[p]=(uint32_t)groove_drum_steps(0,p);
 }
@@ -105,7 +106,7 @@ static void paint(void) {
     initialized=1;frame_active=0;
 }
 void groove_screen_init(void) {
-    old_keys=old_buttons=band=frame_active=initialized=0;dirty=splash=1;
+    old_keys=old_buttons=band=frame_active=initialized=autostart=0;dirty=splash=1;
     memset(hashes,0,sizeof hashes);started=frame_at=fm1_millis();
     fm1_controls_init();fm1_screen_init();
     for(unsigned i=0;i<41;++i)fm1_led_set(i,0);
@@ -122,6 +123,11 @@ void groove_screen_control(void) {
         }
         splash=0;dirty=1;
     }
+    if(!autostart){
+        /* Start playing as soon as the splash ends (same path as PLAY). */
+        autostart=1;
+        uint8_t start=0xfa;(void)fm1_midi_post(&start,1);
+    }
     groove_master_update(c.knob);
     for(unsigned n=0;n<7;++n)if(c.encoders[n]){baile_encoder(n,c.encoders[n]);dirty=1;}
     if(pressed&1)baile_page(0);if(pressed&2)baile_page(1);
@@ -135,7 +141,11 @@ void groove_screen_control(void) {
     baile_poll();
     struct groove_view v;groove_get_view(0,0,&v);
     uint32_t mask=(uint32_t)groove_drum_steps(0,baile_state(2));
-    for(unsigned n=0;n<16;++n)fm1_led_set(14+white[n],(mask>>(baile_state(3)*16+n))&1U);
+    for(unsigned n=0;n<16;++n){
+        unsigned lit=(mask>>(baile_state(3)*16+n))&1U;
+        if(v.playing&&v.play_step==baile_state(3)*16+n)lit^=1U; /* playhead inverts the step LED */
+        fm1_led_set(14+white[n],lit);
+    }
     fm1_led_set(12,v.playing);fm1_led_set(0,baile_state(3)!=0);fm1_led_set(1,baile_state(3)==0);
     paint();
 }
@@ -147,7 +157,7 @@ void groove_screen_tap(uint32_t now){groove_tempo_tap(now);}
 #ifdef FM1_HOST_TEST
 int groove_screen_preset(unsigned slot){dirty=1;return baile_select(slot);}
 unsigned groove_screen_preset_position(void){return baile_state(0)|(1U<<8)|(1U<<9);}
-int groove_screen_open(unsigned target){if(target>1)return -1;splash=0;dirty=1;return 0;}
+int groove_screen_open(unsigned target){if(target>1)return -1;splash=0;autostart=1;dirty=1;return 0;}
 void groove_screen_web_fine(unsigned fine){(void)fine;}
 unsigned groove_screen_web_first(void){return baile_state(3)*16;}
 int groove_screen_web_step(unsigned step,unsigned toggle){if(step>=16||toggle>1)return -1;if(toggle)baile_step(step);baile_page(step/16);dirty=1;return 0;}

@@ -8,7 +8,7 @@ Na versão 0.7, os 12 samples recebem ajuste de ganho para aproximar o volume do
 
 ## Uso
 
-A arte de abertura do BAILE permanece completa por 3 segundos. Em seguida aparece o Tamborzão e os controles ficam ativos. PLAY inicia ou para o beat. PRESETS troca de kit; ALGORITHM seleciona uma das quatro trilhas; as 16 teclas brancas alternam os passos dessa trilha. Cada preset tem um único compasso de 16 passos; OCT −/+ fica sem função. K1 controla saturação, K2 reverb, K3 BPM e K4 swing.
+A arte de abertura do BAILE permanece completa por 3 segundos. Em seguida aparece o Tamborzão e os controles ficam ativos. PLAY inicia ou para o beat. PRESETS troca de kit; ALGORITHM seleciona uma das quatro trilhas; as 16 teclas brancas alternam os passos dessa trilha. Cada preset tem um único compasso de 16 passos; OCT −/+ fica sem função. K1 controla saturação, K2 delay (dry/wet, sincronizado ao BPM, 1/4 de nota), K3 BPM e K4 swing. SELECT ajusta o volume da trilha selecionada. **Candidata 0.8 (sem teste em hardware):** o beat começa a tocar sozinho depois da abertura e os LEDs do teclado mostram o playhead invertendo o LED do passo.
 
 Os três kits guardam suas edições separadamente durante a sessão. Ao reiniciar, volta o Tamborzão original. Não há Mandelão nesta versão. Os clips de Voltmix e Bolha foram mapeados na ordem KICK, SNARE, HAT, RIM e aproximados à grade de semicolcheias conforme autorizado; é usado um único compasso. A Brilhante do Bolha usa a edição aprovada no navegador: passos 4, 7, 11 e 13.
 

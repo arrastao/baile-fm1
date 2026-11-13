@@ -4,6 +4,8 @@ BAILE is a three-kit rhythm instrument for the M-VAVE FM-1: **Tamborzão**, **Vo
 
 This is a reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinned to [`4c7496d`](https://github.com/m-vave/fm1_open/commit/4c7496daac04a95ff10d1afdcc8f9ead2dbabc41). 
 
+**0.8 candidate (not hardware-tested, stable remains 0.7):** the sequencer starts playing after the splash; the keyboard LEDs show the steps plus the playhead (the playhead inverts the LED it passes); SELECT sets the level of the selected part; the reverb is replaced by a BPM-synced 1/4-note delay (feedback 50%, 250 Hz–4 kHz band filter centred on 1 kHz, repitch smoothing, no ping-pong, no modulation) on K2. See [STATUS](STATUS.md).
+
 **0.7 change:** the 12 samples use a common attack-energy reference with peak headroom; originals are preserved. See [audio preparation](docs/AUDIO.md).
 
 
@@ -20,10 +22,11 @@ This is a reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinn
 | PRESETS | Tamborzão / Voltmix / Beat Bolha |
 | ALGORITHM | Select one of the four sound parts |
 | 16 white keys | Toggle the selected part's steps in the visible bar |
+| SELECT (encoder) | Level of the selected part (0–127, ±4 per click) |
 | OCT −/+ | Unused (single bar) |
 | PLAY | Start / stop |
 | K1 | Saturator |
-| K2 | Reverb |
+| K2 | Delay dry/wet, 0–100% (starts at 50%) |
 | K3 | Tempo |
 | K4 | Swing |
 

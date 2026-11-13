@@ -2,7 +2,7 @@
 #ifndef FM1_VERSION_H
 #define FM1_VERSION_H
 
-#define FM1_RELEASE_VERSION "BAILE 0.7-dev"
+#define FM1_RELEASE_VERSION "BAILE 0.8-dev"
 #define FM1_UPDATE_PRODUCT "FM-1_8490170"
 
 #endif

@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 vm.runInThisContext(fs.readFileSync('sdk/WebUpdate.js','utf8'));
-const file=process.argv[2]||'build/BAILE-0.7-FM1.fwsc';
+const file=process.argv[2]||'build/BAILE-0.8-candidate-FM1.fwsc';
 const bytes=fs.readFileSync(file),pkg=FM1Web.inspectPackage(bytes);
 const baseline=fs.readFileSync('../../outputs/Tamborzao-FM1/Tamborzao-FM1-0.1.fwsc');
 const old=FM1Web.inspectPackage(baseline);

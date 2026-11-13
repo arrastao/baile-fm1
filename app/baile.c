@@ -4,9 +4,11 @@
 #include <string.h>
 extern int baile_bind(unsigned kit);
 static struct groove_project session[3];
-static unsigned kit, part, page, last_step, reverb, valid[3];
+static unsigned kit, part, page, last_step, delay_mix, valid[3];
 static int pending, fault;
 volatile unsigned baile_drive;
+/* Published to the audio ISR: dry/wet 0..100 and 1/4-note length (see delay.c). */
+volatile unsigned baile_delay_mix, baile_delay_length;
 static int clamp(int n, int lo, int hi) { return n < lo ? lo : n > hi ? hi : n; }
 const char *baile_part(unsigned p) {
     static const char *const names[3][4] = {
@@ -14,10 +16,6 @@ const char *baile_part(unsigned p) {
         {"BUMBO","CAIXA","CHIMBAL","ARO"},
         {"BUMBO","CAIXA","BRILHANTE","RITMADA"}};
     return p < 4 ? names[kit][p] : "";
-}
-static void send_level(void) {
-    uint8_t sends[2]; groove_sends_get(0, sends);
-    groove_sends_edit(0, 0, (int)reverb - sends[0]);
 }
 static int activate(unsigned next, int capture) {
     if (!valid[next]) {
@@ -36,12 +34,13 @@ static int activate(unsigned next, int capture) {
     int r = groove_project_apply(&session[next]);
     if (!r) r = baile_bind(next);
     if (v.playing) groove_sequence_keep_transport(1);
-    if (!r) { kit = next; pending = -1; send_level(); groove_edit_forget_history(); }
+    if (!r) { kit = next; pending = -1; groove_edit_forget_history(); }
     fm1_engine_resume();
     return fault = r;
 }
 void baile_start(void) {
-    kit = part = page = last_step = reverb = baile_drive = 0;
+    kit = part = page = last_step = baile_drive = 0;
+    delay_mix = 50; baile_delay_mix = 50; baile_delay_length = baile_delay_quarter(130);
     pending = -1; fault = 0; memset(valid, 0, sizeof valid);
     (void)activate(0, 0);
 }
@@ -55,6 +54,9 @@ int baile_select(unsigned next) {
 void baile_poll(void) {
     struct groove_view v; groove_get_view(0, 0, &v);
     unsigned step = v.play_step;
+    unsigned bpm = groove_tempo_current();
+    if (!bpm) bpm = groove_tempo_saved();
+    baile_delay_length = baile_delay_quarter(bpm);
     if (pending >= 0 && (!v.playing || step < last_step)) (void)activate((unsigned)pending, 1);
     last_step = step;
 }
@@ -62,10 +64,11 @@ void baile_page(unsigned value) { (void)value; page = 0; }
 void baile_encoder(unsigned e, int delta) {
     if (!delta) return;
     switch (e) {
-    case 0: break;
+    case 0: /* SELECT: level of the selected part */
+        groove_tone_edit(0, part, 0, delta * 4); break;
     case 1: part = (unsigned)((int)part+delta%4+4)%4; break;
     case 2: baile_drive = (unsigned)clamp((int)baile_drive+delta,0,100); break;
-    case 3: reverb = (unsigned)clamp((int)reverb+delta,0,15); send_level(); break;
+    case 3: delay_mix = (unsigned)clamp((int)delay_mix+delta*5,0,100); baile_delay_mix = delay_mix; break;
     case 4: groove_tempo_edit(delta); break;
     case 5: groove_sequence_setting_edit(0,delta); break;
     case 6: (void)baile_select((unsigned)((pending < 0 ? (int)kit : pending)+delta%3+3)%3); break;
@@ -79,9 +82,11 @@ void baile_step(unsigned step) {
 unsigned baile_state(unsigned field) {
     switch (field) {
     case 0:return kit; case 1:return (unsigned)(pending+1); case 2:return part;
-    case 3:return page; case 4:return baile_drive; case 5:return reverb;
+    case 3:return page; case 4:return baile_drive; case 5:return delay_mix;
     case 6:return groove_tempo_saved(); case 7:return groove_sequence_setting(0);
-    case 8:return (unsigned)fault; default:return 0;
+    case 8:return (unsigned)fault;
+    case 9: { uint8_t v[GROOVE_TONE_PARAMS] = {0}; return groove_tone_copy(0, part, v) >= 0 ? v[0] : 0; }
+    default:return 0;
     }
 }
 /* Bounded integer soft clip before the upstream master/USB/Bluetooth mixer.
