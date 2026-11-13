@@ -7,25 +7,36 @@ const kits=['Tamborzão','Voltmix','Beat Bolha'];
 const white=[0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26];
 const black=[[1,0],[3,1],[5,2],[8,4],[10,5],[13,7],[15,8],[17,9],[20,11],[22,12],[25,14]];
 const knobSpecs=[
- {name:'MASTER',hint:'Volume',x:7.2,y:15,kind:3,index:0,min:0,max:1023,value:1023},
- {name:'SELECT',hint:'Volume da trilha',x:18.1,y:15,kind:2,index:0,min:0,max:127,value:0},
- {name:'PRESETS',hint:'Kit',x:7.2,y:33,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
- {name:'ALGORITHM',hint:'Trilha',x:18.1,y:33,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
- ...['Saturação','Delay','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,kind:2,index:i+2,min:i===2?30:0,max:[100,100,300,50][i],value:i===2?130:0,state:i+4}))
+ {name:'MASTER',hint:'Volume',x:7.2,y:15,px:13.5,py:11.6,kind:3,index:0,min:0,max:1023,value:1023},
+ {name:'SELECT',hint:'Volume da trilha',x:18.1,y:15,px:32.5,py:11.6,kind:2,index:0,min:0,max:127,value:0},
+ {name:'PRESETS',hint:'Kit',x:7.2,y:33,px:13.5,py:20.7,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
+ {name:'ALGORITHM',hint:'Trilha',x:18.1,y:33,px:32.5,py:20.7,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
+ ...['Saturação','Delay','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,px:19.9+i*22.33,py:39.5,kind:2,index:i+2,min:i===2?30:0,max:[100,100,300,50][i],value:i===2?130:0,state:i+4}))
 ];
 let core,wasm,engine,audio,starting,timer,transferring=false,ready=false,queue=[],state=new Uint32Array(16);
 const pointers=new Map(),held=new Map(),matrix=new Map();
 const ctx=$('lcd').getContext('2d'),bitmap=ctx.createImageData(240,240);
-function position(el,x,y,w,h){Object.assign(el.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});}
+// Each control has a landscape box and a portrait box (percent of the device); CSS animates between them.
+function place(el,land,port){
+ ['l','t','w','h'].forEach((n,i)=>{if(land[i]!==undefined)el.style.setProperty('--'+n,land[i]+'%');});
+ ['pl','pt','pw','ph'].forEach((n,i)=>{if(port[i]!==undefined)el.style.setProperty('--'+n,port[i]+'%');});
+}
+let half=0;const keyEls=[];
+function layoutKeys(){
+ for(const k of keyEls)place(k.el,[],[k.px(half),k.py,10,k.ph]);
+ if(minimap)minimap.style.setProperty('--half',half);
+}
+let minimap=null,minimapCells=[];
 function mode(){
  const small=Math.min(innerWidth,innerHeight)<=600;
- const mobile=matchMedia('(pointer:coarse)').matches||small;
+ // Desktop (mouse + hover) always keeps the landscape device, however narrow the window is.
+ const desktop=matchMedia('(hover:hover) and (pointer:fine)').matches;
+ const mobile=matchMedia('(pointer:coarse)').matches||(small&&!desktop);
  const portrait=mobile&&innerHeight>innerWidth;
  const wasPortrait=document.documentElement.classList.contains('portrait-mode');
  document.documentElement.classList.toggle('instrument-mode',mobile);
  document.documentElement.classList.toggle('portrait-mode',portrait);
- $('stage').inert=portrait;
- if(wasPortrait!==portrait){releaseAll();fullscreenTried=false;}
+  if(wasPortrait!==portrait){releaseAll();fullscreenTried=false;}
 }
 let fullscreenTried=false;
 function fullscreen(){
@@ -35,24 +46,6 @@ function fullscreen(){
    document.documentElement.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
 }
 let orientationLocked=false;
-$('open-fullscreen').addEventListener('click',async()=>{
- const button=$('open-fullscreen'),hint=$('rotate-hint');
- button.disabled=true;button.textContent='Abrindo…';
- try{
-  if(!document.fullscreenElement){
-   if(!document.documentElement.requestFullscreen)throw Error('Fullscreen unavailable');
-   await document.documentElement.requestFullscreen({navigationUI:'hide'});
-  }
-  if(screen.orientation?.lock){
-   try{await screen.orientation.lock('landscape');orientationLocked=true;}catch{}
-  }
-  hint.textContent='Tela cheia ativada. Vire o telefone para usar.';
- }catch{
-  hint.textContent='Tela cheia indisponível. Vire o telefone para usar.';
- }finally{
-  button.disabled=false;button.textContent='Abrir em tela cheia';mode();
- }
-});
 function announce(text){$('announcer').textContent=text;}
 function failure(text){$('boot-status').hidden=false;$('boot-status').textContent=text;}
 function command(kind,index,value){
@@ -103,7 +96,7 @@ function turn(k,delta){
 }
 for(const k of knobSpecs){
  const el=document.createElement('div');el.className='knob-control';el.tabIndex=0;
- Object.assign(el.style,{left:k.x+'%',top:k.y+'%'});
+ place(el,[k.x,k.y,9,18],[k.px,k.py,16,9.5]);
  el.setAttribute('role','slider');el.setAttribute('aria-label',k.name+' · '+k.hint);el.setAttribute('aria-valuemin',k.min);el.setAttribute('aria-valuemax',k.max);el.title=k.name+' · '+k.hint+' — arraste ou use as setas';
  el.innerHTML='<span class="knob-label"></span><span class="knob" aria-hidden="true"></span><output class="knob-value" aria-hidden="true"></output>';
  el.querySelector('.knob-label').textContent=k.name;k.el=el;k.output=el.querySelector('output');$('knobs').append(el);knobView(k);
@@ -130,21 +123,28 @@ const labels=['OCT−','OCT+','FX','SCL','ENV','LFO','EDIT','GLO','HOME','SAVE',
 for(let i=0;i<14;i++){
  const el=document.createElement('button');el.type='button';el.className='panel-button'+(i===12?' play-button':'');el.textContent=labels[i];el.id='button-'+i;
  el.setAttribute('aria-label',labels[i]+(i===12?' · iniciar ou parar':i<2?' · um compasso': ' · sem função no BAILE 0.8'));
- if(i<2)position(el,4.1+i*8.5,43.3,7.7,5.4);else position(el,54.7+(i-2)%6*6.75,28.6+Math.floor((i-2)/6)*10.9,5.8,8.8);
+ if(i<2)place(el,[4.1+i*8.5,43.3,7.7,5.4],[5.4+i*18.5,26.7,16.7,5.3]);else{const c=(i-2)%6,r=Math.floor((i-2)/6);place(el,[54.7+c*6.75,28.6+r*10.9,5.8,8.8],[8+c*14.1,46.8+r*6.4,12.3,5.4]);}
  bindButton(el,0,i);matrix.set(i,el);$('buttons').append(el);
 }
-function note(n,x,y,h,caption){
- const el=document.createElement('button');el.type='button';el.className='note-key';el.id='key-'+n;position(el,x,y,5.8,h);
+function note(n,x,y,h,caption,px,py,ph){
+ const el=document.createElement('button');el.type='button';el.className='note-key';el.id='key-'+n;place(el,[x,y,5.8,h],[px(0),py,10,ph]);keyEls.push({el,px,py,ph});
  const step=white.indexOf(n);el.setAttribute('aria-label',step<0?'Tecla '+n+' · sem função no BAILE 0.8':'Passo '+(step+1));
  el.innerHTML='<span class="key-cap"></span><span class="key-caption">'+caption+'</span>';bindButton(el,1,n);matrix.set(n+14,el);$('keys').append(el);
 }
-white.forEach((n,i)=>note(n,2.8+i*5.86,79.2,16.2,String(i+1)));
-black.forEach(([n,after],i)=>note(n,2.8+(after+.5)*5.86,61.5,15.4,['OP1','OP2','OP3','OP4','OP5','OP6','PIT','MOD','MONO','POLY',''][i]));
+white.forEach((n,i)=>note(n,2.8+i*5.86,79.2,16.2,String(i+1),h=>7.5+(i-8*h)*10.64,79.9,14.8));
+black.forEach(([n,after],i)=>note(n,2.8+(after+.5)*5.86,61.5,15.4,['OP1','OP2','OP3','OP4','OP5','OP6','PIT','MOD','MONO','POLY',''][i],h=>7.5+(after+.5-8*h)*10.64,68.5,10.8));
+// Portrait shows eight steps at a time; the strip above the keys shows and picks the half.
+minimap=document.createElement('div');minimap.className='minimap';minimap.setAttribute('role','group');minimap.setAttribute('aria-label','Passos 1–8 ou 9–16');
+white.forEach((_,i)=>{const c=document.createElement('i');c.style.left=(i*6.25+.5)+'%';minimapCells.push(c);minimap.append(c);});
+minimap.append(document.createElement('b'));
+minimap.addEventListener('pointerdown',e=>{e.preventDefault();const r=minimap.getBoundingClientRect();half=e.clientX-r.left<r.width/2?0:1;layoutKeys();});
+device.append(minimap);layoutKeys();
 function paint(pixels,s,leds){
  state=s;
  for(let i=0;i<pixels.length;i++){const p=pixels[i],j=i*4;bitmap.data[j]=(p>>11)*255/31;bitmap.data[j+1]=((p>>5)&63)*255/63;bitmap.data[j+2]=(p&31)*255/31;bitmap.data[j+3]=255;}
  ctx.putImageData(bitmap,0,0);
  // Read actual firmware LED outputs, including startup and transport. No synthetic playhead.
+ minimapCells.forEach((c,i)=>c.classList.toggle('on',!!leds[14+white[i]]));
  matrix.forEach((el,i)=>{el.classList.toggle('lit',!!leds[i]);if(i>=14||i===12)el.setAttribute('aria-pressed',String(!!leds[i]));});
  for(const k of knobSpecs){
   if(k.state!==undefined)k.value=s[k.state];else if(k.kind===2&&k.index===6)k.value=s[1]?s[1]-1:s[0];else if(k.kind===2&&k.index===1)k.value=s[2];knobView(k);

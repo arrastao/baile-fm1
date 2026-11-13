@@ -20,11 +20,11 @@ The panel follows the [Felucca hardware diagram](https://github.com/hugelton/Fel
 
 Drag knobs up/right to increase, down/left to decrease. Tapping either half changes one increment; keyboard arrows and the mouse wheel also work. The LCD is display-only. LEDs come from the engine's 41 LED outputs, including startup, transport and the selected pattern. Multiple held pointers are tracked separately and released on cancellation, rotation, loss of focus or hiding the page.
 
-## Phone layout
+## Phone and desktop layout
 
-Portrait shows a rotation prompt, a firmware download link and an **Abrir em tela cheia** button. Landscape fills the available viewport, respects safe-area insets and hides the site header, download link and footer. Device proportions adapt to wide screens while the LCD remains square and knobs remain round.
+One device, two layouts. On a phone the device fills the screen and its controls glide (about half a second) between the **landscape** layout (the FM-1 as it looks on the desk) and the **portrait** layout (knobs and LCD on top, button grid, then the keyboard). There is no rotate-your-phone screen. In portrait a slim top bar keeps the **Baixar firmware** button; the keyboard shows eight steps at a time, and the strip above it shows the 16 steps (lit = active) and lets you tap the half you want (1–8 or 9–16). Landscape hides the top bar and shows all 16 keys. Reduced-motion settings turn the animation off.
 
-The portrait button requests fullscreen from the click gesture, then attempts to lock landscape orientation when supported. If fullscreen or orientation locking is unavailable, the rotation prompt remains usable and explains the next step. Exiting fullscreen releases an orientation lock acquired by the page. The first instrument control gesture also requests fullscreen when supported and activates audio. Rotation alone is not a user activation and cannot guarantee fullscreen. Browsers that reject the request continue using the full available webpage area. Phone/browser system bars cannot be forcibly hidden. No extra button appears over the landscape instrument panel.
+On a computer (mouse and hover) the simulator always uses the landscape layout inside the rounded FM-1 body, whatever the window size. The first control gesture in landscape also requests fullscreen where the browser allows it.
 
 ## Engine and verification
 
@@ -32,4 +32,4 @@ The portrait button requests fullscreen from the click gesture, then attempts to
 
 Run `node tests/web-panel.mjs` for the shipped engine and worklet checks: three kits, four tracks, all 16 steps and LED mappings, splash interval, autoplay, SELECT level, knob limits, bar-boundary switching, release behavior, memory handoff, finite audio at 44.1/48 kHz and master mute.
 
-Browser validation: portrait 390×844; landscape 844×390 and 667×375 with no control outside the viewport or page overflow; knob dragging, transport, kit/track selection, step editing and orientation changes preserving edits. Desktop layout also checked at 1200×850. These are browser viewport tests, not a physical smartphone or mobile fullscreen compatibility certification. The hardware firmware download is BAILE 0.8 (`firmware/BAILE-0.8-FM1.fwsc`).
+Browser validation: portrait 375×812; landscape 844×390 with the animated switch between them; knob dragging, transport, kit/track selection, step editing and orientation changes preserving edits. Desktop layout also checked at 1200×850. These are browser viewport tests, not a physical smartphone or mobile fullscreen compatibility certification. The hardware firmware download is BAILE 0.8 (`firmware/BAILE-0.8-FM1.fwsc`).
