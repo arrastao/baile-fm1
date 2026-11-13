@@ -119,7 +119,7 @@ for(const k of knobSpecs){
  el.addEventListener('keydown',e=>{const d={ArrowUp:1,ArrowRight:1,ArrowDown:-1,ArrowLeft:-1}[e.key];if(d){e.preventDefault();activate();turn(k,d);}});
  el.addEventListener('wheel',e=>{if(!ready)return;e.preventDefault();turn(k,e.deltaY<0?1:-1);},{passive:false});
 }
-const labels=['OCT−','OCT+','FX','SCL','ENV','LFO','EDIT','GLO','HOME','SAVE','ARP','SEQ','PLAY / STOP','REC'];
+const labels=['OCT−','OCT+','FX','SCL','ENV','LFO','EDIT','GLO','HOME','SAVE','ARP','SEQ','PLAY','REC'];
 for(let i=0;i<14;i++){
  const el=document.createElement('button');el.type='button';el.className='panel-button'+(i===12?' play-button':'');el.textContent=labels[i];el.id='button-'+i;
  el.setAttribute('aria-label',labels[i]+(i===12?' · iniciar ou parar':i<2?' · um compasso': ' · sem função no BAILE 0.8'));
