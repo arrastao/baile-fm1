@@ -1,13 +1,12 @@
-# BAILE 0.8 candidate — delay, autoplay, LED playhead, part level
+# BAILE 0.8 — delay, autoplay, LED playhead, part level
 
-Status: **source and host tests only. Not built as firmware, not flashed, not hardware-validated.** 0.7 remains the stable release and `firmware/BAILE-0.7-FM1.fwsc` is untouched.
+Status: **stable.** Built natively on macOS and run in the native FM-1 emulator; on 2026-11-13 the user reported that the build works on their physical FM-1 (a user-reported result, separate from the automated checks). Firmware: `firmware/BAILE-0.8-FM1.fwsc` (594484 bytes, SHA-256 `813390703a715913188b486d157d0f81b2d697b12559ac29c25eace5dae9b763`). 0.7 remains in `firmware/` and is untouched. See [CHANGELOG](CHANGELOG.md).
 
 - Autoplay: the sequencer starts when the three-second splash ends (same MIDI start path as PLAY). PLAY still stops/starts.
 - LED playhead: keyboard LEDs show the selected part's steps; the LED under the playhead shows the inverse, so a lit step blinks off as it passes and an empty step blinks on.
 - SELECT (encoder 0) edits the sampler Level of the selected part in steps of 4 (0..127). Stored per kit for the session, like pattern edits.
-- Delay replaces reverb (`app/delay.c`): mono 11.025 kHz int16 line (32 KiB RAM), 1/4 note synced to BPM (1/8 below ~40 BPM so the line fits), feedback 50%, 250 Hz high-pass + 4 kHz low-pass (a wide band centred on 1 kHz; an approximation of Ableton's Filter 1 kHz / Width 8, not an exact match), repitch smoothing when the tempo changes, no ping-pong, no L/R offset, no modulation. K2 is Dry/Wet 0–100%, initial 50% (Ableton-style: dry stays unity to 50%, wet is unity from 50%). 0% is bit-exact dry; the tail rings out after STOP. All reverb sends stay at zero and the engine reverb receives no signal. LCD shows `DLY`, and `VOL` for the selected part.
-- Host acceptance (`tests/acceptance.py`, `tests/audio_levels.py`): autoplay, LED playhead, SELECT bounds, delay bypass, echo time/level, tail, click-free BPM and Dry/Wet changes. Not run here: native firmware build, WebAssembly build, `tests/native_layout.py`, `tests/web-panel.mjs`, `tests/source_contract.py` (needs the upstream git history).
-- Open risks for hardware: the new 32 KiB buffer and `baile_delay` in the audio ISR need the native build's heap/SRAM checks and a listening test on the FM-1; the published web simulator still runs the 0.7 wasm until it is rebuilt.
+- Delay replaces reverb (`app/delay.c`): mono 11.025 kHz int16 line (32 KiB RAM), 1/4 note synced to BPM (1/8 below ~40 BPM so the line fits), feedback 50%, 250 Hz high-pass + 4 kHz low-pass (a wide band centred on 1 kHz; an approximation of Ableton's Filter 1 kHz / Width 8, not an exact match), repitch smoothing when the tempo changes, no ping-pong, no L/R offset, no modulation. K2 is Dry/Wet 0–100%, initial 0% (Ableton-style: dry stays unity to 50%, wet is unity from 50%). 0% is bit-exact dry; the tail rings out after STOP. All reverb sends stay at zero and the engine reverb receives no signal. LCD shows `DLY`, and `VOL` for the selected part.
+- Host acceptance (`tests/acceptance.py`, `tests/audio_levels.py`): autoplay, LED playhead, SELECT bounds, delay bypass, echo time/level, tail, click-free BPM and Dry/Wet changes. Native: application 553096 of 584993 bytes, runtime heap 205516 bytes, 144 SRAM symbols, package verification and native emulator run passed. Not run: `tests/web-panel.mjs`. The published web simulator still runs the 0.7 wasm until it is rebuilt.
 
 # BAILE 0.7 — stable
 

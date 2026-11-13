@@ -179,7 +179,7 @@ mixv.value=50;lenv.value=s.baile_delay_quarter(130)
 def fx_preview(amount):
     s.sim_boot(0);render(1400);s.baile_encoder(3,amount);ensure(1)
     return render(900)
-dry=fx_preview(-100);wet=fx_preview(0)
+dry=fx_preview(0);assert s.baile_state(5)==0,'delay starts at 0%';wet=fx_preview(10);assert s.baile_state(5)==50
 assert sum(abs(a-b) for a,b in zip(dry,wet))>1
 assert all(math.isfinite(v) and abs(v)<=1 for v in wet)
 report['checks']+=['autoplay after splash','LED playhead inverts the step LED','SELECT adjusts selected part level','delay 0% exact dry','delay 1/4 note echo at half feedback','delay tail and click-free BPM / Dry-Wet changes','saturator exact bypass and clipping bounds','delay changes rendered audio']

@@ -1,4 +1,8 @@
-# BAILE 0.7 stable firmware
+# BAILE firmware
+
+**`BAILE-0.8-FM1.fwsc` (stable, current):** adds autoplay, the LED playhead, SELECT part level and the BPM-synced delay on K2 (see [CHANGELOG](../CHANGELOG.md)). Built on macOS via JieLi Linux + Blink with the same SDK boot and loader as 0.7; native emulator run and package verification passed, and the user reported it works on their physical FM-1 on 2026-11-13. The tested bytes are published unchanged (the label inside still reads `0.8-dev`).
+
+## BAILE 0.7 stable firmware
 
 `BAILE-0.7-FM1.fwsc` contains the app, all three sample banks, patterns and art. No separate asset import is needed. Version 0.7 embeds normalized sample banks with unchanged source WAVs preserved in the repository. The splash stays visible for three seconds after rendering, and all kits use one 16-step bar.
 

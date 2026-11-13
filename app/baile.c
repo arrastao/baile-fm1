@@ -40,7 +40,7 @@ static int activate(unsigned next, int capture) {
 }
 void baile_start(void) {
     kit = part = page = last_step = baile_drive = 0;
-    delay_mix = 50; baile_delay_mix = 50; baile_delay_length = baile_delay_quarter(130);
+    delay_mix = 0; baile_delay_mix = 0; baile_delay_length = baile_delay_quarter(130);
     pending = -1; fault = 0; memset(valid, 0, sizeof valid);
     (void)activate(0, 0);
 }

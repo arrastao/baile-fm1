@@ -4,14 +4,14 @@ BAILE is a three-kit rhythm instrument for the M-VAVE FM-1: **Tamborzão**, **Vo
 
 This is a reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinned to [`4c7496d`](https://github.com/m-vave/fm1_open/commit/4c7496daac04a95ff10d1afdcc8f9ead2dbabc41). 
 
-**0.8 candidate (not hardware-tested, stable remains 0.7):** the sequencer starts playing after the splash; the keyboard LEDs show the steps plus the playhead (the playhead inverts the LED it passes); SELECT sets the level of the selected part; the reverb is replaced by a BPM-synced 1/4-note delay (feedback 50%, 250 Hz–4 kHz band filter centred on 1 kHz, repitch smoothing, no ping-pong, no modulation) on K2. See [STATUS](STATUS.md).
+**0.8 change ([changelog](CHANGELOG.md)):** the sequencer starts playing after the splash; the keyboard LEDs show the steps plus the playhead (the playhead inverts the LED it passes); SELECT sets the level of the selected part; the reverb is replaced by a BPM-synced 1/4-note delay (feedback 50%, 250 Hz–4 kHz band filter centred on 1 kHz, repitch smoothing, no ping-pong, no modulation) on K2. See [STATUS](STATUS.md).
 
 **0.7 change:** the 12 samples use a common attack-energy reference with peak headroom; originals are preserved. See [audio preparation](docs/AUDIO.md).
 
 
-**Status: stable (0.7).** Promoted after the user reported successful operation on their FM-1. The firmware bytes are unchanged from the tested build. Container integrity, original boot, embedded banks and native emulator playback were also verified. See [STATUS](STATUS.md).
+**Status: stable (0.8).** The user reported successful operation of 0.8 on their physical FM-1 (2026-11-13); 0.7 remains available. The firmware bytes are unchanged from the tested build. Container integrity, original boot, embedded banks and native emulator playback were also verified. See [STATUS](STATUS.md).
 
-[Try BAILE in your browser](https://arrastao.github.io/baile-fm1/) · [Download BAILE 0.7 firmware](firmware/BAILE-0.7-FM1.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
+[Try BAILE in your browser](https://arrastao.github.io/baile-fm1/) · [Download BAILE 0.8 firmware](firmware/BAILE-0.8-FM1.fwsc) · [0.7](firmware/BAILE-0.7-FM1.fwsc) · [SHA-256](firmware/SHA256SUMS.txt)
 
 [Português](README.pt-BR.md) · [Build](docs/BUILDING.md) · [Architecture](docs/ARCHITECTURE.md) · [Asset rights](assets/README.md)
 
@@ -26,7 +26,7 @@ This is a reconstruction on [FM1 Open](https://github.com/m-vave/fm1_open), pinn
 | OCT −/+ | Unused (single bar) |
 | PLAY | Start / stop |
 | K1 | Saturator |
-| K2 | Delay dry/wet, 0–100% (starts at 50%) |
+| K2 | Delay dry/wet, 0–100% (starts at 0%) |
 | K3 | Tempo |
 | K4 | Swing |
 
