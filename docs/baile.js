@@ -7,11 +7,11 @@ const kits=['Tamborzão','Voltmix','Beat Bolha'];
 const white=[0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26];
 const black=[[1,0],[3,1],[5,2],[8,4],[10,5],[13,7],[15,8],[17,9],[20,11],[22,12],[25,14]];
 const knobSpecs=[
- {name:'MASTER',hint:'Volume',x:7.2,y:15,px:13.5,py:11.6,kind:3,index:0,min:0,max:1023,value:1023},
- {name:'SELECT',hint:'Volume da trilha',x:18.1,y:15,px:32.5,py:11.6,kind:2,index:0,min:0,max:127,value:0},
- {name:'PRESETS',hint:'Kit',x:7.2,y:33,px:13.5,py:20.7,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
- {name:'ALGORITHM',hint:'Trilha',x:18.1,y:33,px:32.5,py:20.7,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
- ...['Saturação','Delay','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,px:19.9+i*22.33,py:39.5,kind:2,index:i+2,min:i===2?30:0,max:[100,100,300,50][i],value:i===2?130:0,state:i+4}))
+ {name:'MASTER',hint:'Volume',x:7.2,y:15,px:13.5,py:10.5,kind:3,index:0,min:0,max:1023,value:1023},
+ {name:'SELECT',hint:'Volume da trilha',x:18.1,y:15,px:32.5,py:10.5,kind:2,index:0,min:0,max:127,value:0},
+ {name:'PRESETS',hint:'Kit',x:7.2,y:33,px:13.5,py:22,kind:2,index:6,min:0,max:2,value:0,cyclic:true},
+ {name:'ALGORITHM',hint:'Trilha',x:18.1,y:33,px:32.5,py:22,kind:2,index:1,min:0,max:3,value:0,cyclic:true},
+ ...['Saturação','Delay','BPM','Swing'].map((hint,i)=>({name:'KNOB'+(i+1),hint,x:58+i*11.4,y:15,px:19.9+i*22.33,py:41,kind:2,index:i+2,min:i===2?30:0,max:[100,100,300,50][i],value:i===2?130:0,state:i+4}))
 ];
 let core,wasm,engine,audio,starting,timer,transferring=false,ready=false,queue=[],state=new Uint32Array(16);
 const pointers=new Map(),held=new Map(),matrix=new Map();
@@ -67,7 +67,21 @@ function releaseAll(){
  if(!ready)return;
  if(transferring)queue.push({release:true});else if(engine)engine.port.postMessage({release:true});else core.sim_release();
 }
-function activate(){fullscreen();enableAudio().catch(()=>failure('Toque novamente para ativar o áudio.'));}
+// iOS Safari only unlocks audio on touchend/click (not pointerdown) and keeps Web Audio muted by the
+// ring/silent switch unless the session is "playback". Start audio only from a real activation.
+let userGesture=false,silent=null;
+function keepAlive(){
+ try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch{}
+ if(silent)return;
+ try{silent=new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');silent.loop=true;silent.setAttribute('playsinline','');silent.play().catch(()=>{});}catch{}
+}
+function activate(){fullscreen();if(userGesture)enableAudio().catch(()=>failure('Toque novamente para ativar o áudio.'));}
+function unlock(){
+ userGesture=true;keepAlive();
+ if(audio&&audio.state!=='running')audio.resume().catch(()=>{});
+ else if(!audio&&!starting&&ready)activate();
+}
+['touchend','click','keydown','mouseup'].forEach(t=>document.addEventListener(t,unlock,{capture:true,passive:true}));
 function bindButton(el,kind,index){
  el.dataset.kind=kind;el.dataset.index=index;
  el.addEventListener('pointerdown',e=>{
@@ -123,7 +137,7 @@ const labels=['OCT−','OCT+','FX','SCL','ENV','LFO','EDIT','GLO','HOME','SAVE',
 for(let i=0;i<14;i++){
  const el=document.createElement('button');el.type='button';el.className='panel-button'+(i===12?' play-button':'');el.textContent=labels[i];el.id='button-'+i;
  el.setAttribute('aria-label',labels[i]+(i===12?' · iniciar ou parar':i<2?' · um compasso': ' · sem função no BAILE 0.8'));
- if(i<2)place(el,[4.1+i*8.5,43.3,7.7,5.4],[5.4+i*18.5,26.7,16.7,5.3]);else{const c=(i-2)%6,r=Math.floor((i-2)/6);place(el,[54.7+c*6.75,28.6+r*10.9,5.8,8.8],[8+c*14.1,46.8+r*6.4,12.3,5.4]);}
+ if(i<2)place(el,[4.1+i*8.5,43.3,7.7,5.4],[5.4+i*18.5,28.1,16.7,5.3]);else{const c=(i-2)%6,r=Math.floor((i-2)/6);place(el,[54.7+c*6.75,28.6+r*10.9,5.8,8.8],[8+c*14.1,47.6+r*6.4,12.3,5.4]);}
  bindButton(el,0,i);matrix.set(i,el);$('buttons').append(el);
 }
 function note(n,x,y,h,caption,px,py,ph){
@@ -161,7 +175,8 @@ async function enableAudio(){
  transferring=true;clearInterval(timer);
  starting=(async()=>{
   try{
-   audio=new AudioContext({sampleRate:44100});await audio.resume();await audio.audioWorklet.addModule('baile-worklet.js?v=3');
+   try{audio=new AudioContext({sampleRate:44100});}catch{audio=new AudioContext();}
+   await Promise.race([audio.resume(),new Promise((_,no)=>setTimeout(()=>no(Error('audio resume timeout')),2000))]);if(audio.state!=='running')throw Error('audio suspended');await audio.audioWorklet.addModule('baile-worklet.js?v=3');
    engine=new AudioWorkletNode(audio,'baile',{numberOfInputs:0,numberOfOutputs:1,outputChannelCount:[2],processorOptions:{wasm,memory:core.memory.buffer.slice(0)}});
    engine.port.onmessage=({data:m})=>paint(m.pixels,m.state,m.leds);
    engine.onprocessorerror=()=>failure('O áudio parou. Recarregue a página.');
